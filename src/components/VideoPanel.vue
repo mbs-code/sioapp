@@ -9,7 +9,7 @@
       v-row.fill-height(no-gutters :class="{ 'flex-column': isCollapse }")
         //- left header
         v-col.flex-grow-0
-          LinkedCard.fill-height.foreground(:href='video.url' target='_blank')
+          LinkedCard.fill-height.foreground(:href='url' target='_blank')
             v-row.fill-height.black(no-gutters align='center' justify='center'
              :class="{ 'flex-column': isCollapse, 'bottom-flat': isCollapse, 'right-flat': !isCollapse }"
             )
@@ -105,6 +105,10 @@ export default {
       ary.push(this.parseChips(video.status))
       ary.push(this.parseChips(video.type))
       return ary
+    },
+
+    url() {
+      return `https://www.youtube.com/watch?v=${this.video.key}`
     },
 
     labels() {
