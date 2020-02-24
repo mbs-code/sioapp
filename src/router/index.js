@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Channel from '../views/channels/Index'
+import Video from '../views/videos/Index'
 
 Vue.use(VueRouter)
 
@@ -20,9 +20,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/channels',
-    name: 'Channels',
-    component: Channel
+    path: '/videos',
+    name: 'Videos',
+    component: Video
   }
 ]
 
