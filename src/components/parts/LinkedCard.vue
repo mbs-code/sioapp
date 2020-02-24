@@ -6,7 +6,6 @@
       :to='to'
       :href='href'
       :target='target'
-      tile
     )
       slot
 

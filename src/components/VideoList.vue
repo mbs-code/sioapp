@@ -8,6 +8,7 @@
           :to="{ name: 'video-id', params: { id: video._id }}"
           ref='card'
         )
+    v-spacer.pa-2
 
 </template>
 

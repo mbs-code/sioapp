@@ -11,8 +11,18 @@
       v-col(cols='auto')
         v-pagination(v-model='page' :length='totalPages' total-visible='7' @input='onSearch')
 
-    //- main
+      v-col(cols='auto')
+        //- 色合いが微妙なので css で弄る (v-item--active)
+        v-btn-toggle(v-model='listMode' dense color='primary')
+          v-btn(color='white' elevation='2')
+            v-icon(small) mdi-view-grid
+          v-btn(color='white' elevation='2')
+            v-icon(small) mdi-view-list
+
     VideoList(:videos='videos' :showGrid='listMode === 0' :imageWidth='320')
+
+    v-col(cols='auto')
+      v-pagination(v-model='page' :length='totalPages' total-visible='7' @input='onSearch')
 
 </template>
 
@@ -71,3 +81,14 @@ export default {
   }
 }
 </script>
+
+<style scope lang='scss'>
+// btn group の色を btn と同等にする修正
+// color で濃いめを指定すること
+.v-btn-toggle .v-btn.v-item--active:before {
+  opacity: 1 !important;
+}
+.v-btn-toggle .v-btn.v-item--active i {
+  color: white !important;
+}
+</style>
