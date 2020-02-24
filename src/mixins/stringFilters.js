@@ -50,6 +50,12 @@ const formatDuration = function(val) {
   return '-'
 }
 
+const formatDays = function(val) {
+  if (val) {
+    return dateFns.differenceInDays(new Date(), new Date(val))
+  }
+}
+
 const funcs = {
   formatNumberDigit,
   formatNumberFixed,
@@ -57,7 +63,8 @@ const funcs = {
   formatDatetime,
   formatHumanize,
   formatDatetimeHumanize,
-  formatDuration
+  formatDuration,
+  formatDays
 }
 
 export default {

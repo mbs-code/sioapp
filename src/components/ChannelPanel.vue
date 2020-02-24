@@ -13,7 +13,7 @@
             v-row.fill-height.black(no-gutters align='center' justify='center'
              :class="{ 'flex-column': isCollapse, 'bottom-flat': isCollapse, 'right-flat': !isCollapse }"
             )
-              v-img(:src='video.thumbnailHires' :aspect-ratio='imageAspectRecio' :width='imageWidth')
+              v-img(:src='channel.thumbnailHires' :aspect-ratio='imageAspectRecio' :width='imageWidth')
 
         //- right content
         v-col.flex-grow-1
@@ -29,7 +29,7 @@
 
                 //- title
                 v-col.flex-grow-1
-                  span.title.text--primary {{ video.title }}
+                  span.title.text--primary {{ channel.title }}
 
                 v-col.py-1.flex-grow-0(v-if='isCollapse')
                   v-divider
@@ -43,16 +43,16 @@
                           v-icon {{ label.icon }}
                           span.ml-1.body-2.text-right {{ label.text }}
 
-            v-col.flex-grow-0
-              v-divider
+            //- v-col.flex-grow-0
+            //-   v-divider
 
             //- right fotter
-            v-col.flex-grow-0
-              Media.top-flat(
-                :image='channel.image'
-                :text='channel.title'
-                :to="{ name: 'account-id', params: { id: channel.account }}"
-              )
+            //- v-col.flex-grow-0
+            //-   Media.top-flat(
+            //-     :image='channel.image'
+            //-     :text='channel.title'
+            //-     :to="{ name: 'account-id', params: { id: channel.account }}"
+            //-   )
 
 </template>
 
@@ -73,7 +73,7 @@ export default {
   mixins: [linkable, responsible, stringFilters],
 
   props: {
-    video: {
+    channel: {
       type: Object,
       default: () => {}
     },
@@ -89,46 +89,39 @@ export default {
 
   data() {
     return {
+      video: {},
       width: 0
       // height: 0
     }
   },
 
   computed: {
-    channel() {
-      return this.video.channel || {}
-    },
-
     chips() {
       const ary = []
-      const video = this.video
-      ary.push(this.parseChips(video.status))
-      ary.push(this.parseChips(video.type))
+      // TODO: 所属とか入れたい(tag)
+      // const channel = this.channel
+      // ary.push(this.parseChips(video.status))
+      // ary.push(this.parseChips(video.type))
       return ary
     },
 
     url() {
-      return `https://www.youtube.com/watch?v=${this.video.key}`
+      return `https://www.youtube.com/channel/${this.channel.key}`
     },
 
     labels() {
-      const video = this.video
+      const channel = this.channel
       const ary = []
 
-      let goodRate = (video.like / (video.like + video.dislike)) * 100
-      if (video.like === 0) goodRate = 0
-      if (video.dislike === 0) goodRate = 100
-
-      ary.push({ icon: 'mdi-clock-outline', text: this.formatDatetimeHumanize(video.startTime) })
-      ary.push({ icon: 'mdi-movie', text: this.formatDuration(video.duration) })
-      ary.push({ icon: 'mdi-play', text: this.formatNumber(video.view) })
-      ary.push({ icon: 'mdi-account-group', text: this.formatNumber(video.current) })
-      ary.push({ icon: 'mdi-trending-up', text: this.formatNumber(goodRate) + '%' })
+      ary.push({ icon: 'mdi-account', text: this.formatNumber(channel.subscriber) })
+      ary.push({ icon: 'mdi-play', text: this.formatNumber(channel.view) })
+      ary.push({ icon: 'mdi-filmstrip', text: this.formatNumber(channel.video) })
       if (!this.isCollapse) {
-        ary.push({ icon: 'mdi-thumb-up', text: this.formatNumber(video.like) })
-        ary.push({ icon: 'mdi-thumb-down', text: this.formatNumber(video.dislike) })
-        ary.push({ icon: 'mdi-message-reply', text: this.formatNumber(video.comment) })
+        ary.push({ icon: 'mdi-message-reply', text: this.formatNumber(channel.comment) })
       }
+
+      const tt = this.formatDatetimeHumanize(channel.publishedAt) + ` (${this.formatDays(channel.publishedAt)}日)`
+      ary.push({ icon: 'mdi-clock-outline', text: tt })
       return ary
     }
   },
