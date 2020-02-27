@@ -119,10 +119,14 @@ export default {
       if (video.like === 0) goodRate = 0
       if (video.dislike === 0) goodRate = 100
 
+      const cv = (video.type === 'live')
+        ? this.formatNumber(video.concurrentViewers) + `(${this.formatNumber(video.concurrentViewers)})`
+        : ((video.concurrentViewers) ? `(${this.formatNumber(video.concurrentViewers)})` : '-')
+
       ary.push({ icon: 'mdi-clock-outline', text: this.formatDatetimeHumanize(video.startTime) })
       ary.push({ icon: 'mdi-movie', text: this.formatDuration(video.duration) })
       ary.push({ icon: 'mdi-play', text: this.formatNumber(video.view) })
-      ary.push({ icon: 'mdi-account-group', text: this.formatNumber(video.current) })
+      ary.push({ icon: 'mdi-account-group', text: cv })
       ary.push({ icon: 'mdi-trending-up', text: this.formatNumber(goodRate) + '%' })
       if (!this.isCollapse) {
         ary.push({ icon: 'mdi-thumb-up', text: this.formatNumber(video.like) })
