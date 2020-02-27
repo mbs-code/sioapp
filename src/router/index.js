@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Channels from '../views/channels/Index'
+import Channel from '../views/channels/Id'
 import Video from '../views/videos/Index'
-import Channel from '../views/channels/Index'
 
 Vue.use(VueRouter)
 
@@ -22,12 +23,17 @@ const routes = [
   },
   {
     path: '/channels',
-    name: 'Channels',
+    name: 'channel',
+    component: Channels
+  },
+  {
+    path: '/channels/:id',
+    name: 'channel-id',
     component: Channel
   },
   {
     path: '/videos',
-    name: 'Videos',
+    name: 'videos',
     component: Video
   }
 ]

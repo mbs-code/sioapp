@@ -48,7 +48,7 @@ export default {
 
   mixins: [stringFilters],
 
-  data: function() {
+  data: function () {
     return {
       search: {
         text: ''
@@ -62,6 +62,7 @@ export default {
       totalLength: 0 // 全件数
     };
   },
+
   created: async function() {
     await this.getDataFromApi()
   },

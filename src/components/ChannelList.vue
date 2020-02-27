@@ -5,7 +5,7 @@
         ChannelPanel.fill-height(
           :channel='channel'
           :imageWidth='imageWidth'
-          :to="{ name: 'video-id', params: { id: channel._id }}"
+          :to="{ name: 'channel-id', params: { id: channel.id }}"
           ref='card'
         )
     v-spacer.pa-2
