@@ -5,7 +5,7 @@
         VideoPanel.fill-height(
           :video='video'
           :imageWidth='imageWidth'
-          :to="{ name: 'video-id', params: { id: video._id }}"
+          :to="{ name: 'video-id', params: { id: video.id }}"
           ref='card'
         )
     v-spacer.pa-2
