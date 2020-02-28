@@ -49,9 +49,9 @@
             //- right fotter
             v-col.flex-grow-0
               Media.top-flat(
-                :image='channel.image'
+                :image='channel.thumbnail'
                 :text='channel.title'
-                :to="{ name: 'account-id', params: { id: channel.account }}"
+                :to="{ name: 'channel-id', params: { id: channel.id }}"
               )
 
 </template>
