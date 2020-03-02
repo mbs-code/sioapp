@@ -11,7 +11,7 @@
       v-btn(icon)
         v-icon mdi-magnify
 
-    v-navigation-drawer(app v-model='drawer' :mini-variant='mini' clipped)
+    v-navigation-drawer(app v-model='drawer' :mini-variant='mini' mobile-break-point='600' clipped)
       v-list
         template(v-for='(item, key) in items' :keys='key')
           v-list-item(link :to='item.to' :exact='item.exact')
