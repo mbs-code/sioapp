@@ -1,60 +1,65 @@
-<template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+<template lang="pug">
+  v-app
+    v-app-bar(app color='pink lighten-5' dense clipped-left elevation='2')
+      v-app-bar-nav-icon(@click.stop='drawer = !drawer')
+      v-toolbar-title
+        v-icon.mr-2 mdi-shaker-outline
+        | sioapp
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      v-spacer
 
-      <v-spacer></v-spacer>
+      v-btn(icon)
+        v-icon mdi-magnify
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
+    v-navigation-drawer(app v-model='drawer' :mini-variant='mini' clipped)
+      v-list
+        template(v-for='(item, key) in items' :keys='key')
+          v-list-item(link :to='item.to' :exact='item.exact')
+            v-list-item-icon
+              v-icon {{ item.icon }}
+            v-list-item-content
+              v-list-item-title {{ item.title }}
+      template(v-slot:append)
+        div.pa-2
+          v-switch(v-model='mini' :label='mini ? "" : "折りたたむ"')
 
-    <v-content>
-      <router-view/>
-    </v-content>
-  </v-app>
+    v-content
+      router-view
+
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld';
-
 export default {
   name: 'App',
 
-  // components: {
-  //   HelloWorld,
-  // },
+  data: function () {
+    return {
+      drawer: false,
+      mini: false, // 常にボタンだけモード
+      items: [
+        { title: 'Home', icon: 'mdi-home', to: { name: 'home' }, exact: true },
+        { title: 'チャンネル', icon: 'mdi-youtube', to: { name: 'channels' } },
+        { title: '動画', icon: 'mdi-video', to: { name: 'videos' } },
+      ]
+    }
+  },
 
-  data: () => ({
-    //
-  }),
-};
+  mounted() {
+    if (localStorage.drawer) {
+      this.drawer = Boolean(localStorage.drawer)
+    }
+    if (localStorage.mini) {
+      this.mini = Boolean(localStorage.mini)
+    }
+  },
+
+  watch: {
+    drawer(val) {
+      localStorage.drawer = val
+    },
+    mini(val) {
+      localStorage.mini = val
+    }
+  }
+}
 </script>
