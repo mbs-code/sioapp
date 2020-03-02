@@ -4,7 +4,7 @@ module.exports = {
   publicPath: './',
   devServer: {
     proxy: {
-      'api': {
+      '/api': {
         target: process.env.VUE_APP_API_ENDPOINT,
         ws: false,
         changeOrigin: true
