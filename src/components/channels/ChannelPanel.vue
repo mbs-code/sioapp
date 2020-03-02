@@ -115,7 +115,7 @@ export default {
 
       ary.push({ icon: 'mdi-account', text: this.formatNumber(channel.subscriber) })
       ary.push({ icon: 'mdi-play', text: this.formatNumber(channel.view) })
-      ary.push({ icon: 'mdi-filmstrip', text: this.formatNumber(channel.video) })
+      ary.push({ icon: 'mdi-video', text: this.formatNumber(channel.video) })
       if (!this.isCollapse) {
         ary.push({ icon: 'mdi-message-reply', text: this.formatNumber(channel.comment) })
       }
