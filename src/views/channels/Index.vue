@@ -21,10 +21,10 @@
       v-col(cols='auto')
         //- 色合いが微妙なので css で弄る (v-item--active)
         v-btn-toggle.extend(v-model='search.grid' dense color='primary' @change='writeUrlQuery(search)')
-          v-btn(color='white' elevation='2')
-            v-icon(small) mdi-view-grid
-          v-btn(color='white' elevation='2')
+          v-btn(icon elevation='2')
             v-icon(small) mdi-view-list
+          v-btn(icon elevation='2')
+            v-icon(small) mdi-view-grid
 
     //- main
     ChannelList(:channels='channels' :showGrid='search.grid === 1' :imageWidth='200')
