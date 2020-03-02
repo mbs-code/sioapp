@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Channels from '../views/channels/Index'
-import Channel from '../views/channels/Id'
-import Videos from '../views/videos/Index'
-import Video from '../views/videos/Id'
+import Home from '@/views/Home.vue'
+import Channels from '@/views/channels/Index'
+import Channel from '@/views/channels/Id'
+import Videos from '@/views/videos/Index'
+import Video from '@/views/videos/Id'
 
 Vue.use(VueRouter)
 

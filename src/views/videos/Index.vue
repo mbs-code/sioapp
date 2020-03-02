@@ -51,11 +51,11 @@
 </template>
 
 <script>
-import stringFilters from '../../mixins/stringFilters'
-import htmlHistory from '../../mixins/htmlHistory'
+import stringFilters from '@/mixins/stringFilters'
+import htmlHistory from '@/mixins/htmlHistory'
 
-import VideoList from '../../components/VideoList'
-import Loading from '../../components/parts/Loading'
+import VideoList from '@/components/videos/VideoList'
+import Loading from '@/components/parts/Loading'
 
 export default {
   components: { Loading, VideoList },

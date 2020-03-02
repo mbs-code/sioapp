@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ChannelPanel from './ChannelPanel'
+import ChannelPanel from '@/components/channels/ChannelPanel'
 
 export default {
   components: { ChannelPanel },

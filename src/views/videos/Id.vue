@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import VideoPanel from '../../components/VideoPanel'
+import VideoPanel from '@/components/videos/VideoPanel'
 // import ChannelInfoTable from '../../components/ChannelInfoTable'
 // import ChannelGraph from '../../components/ChannelGraph'
 

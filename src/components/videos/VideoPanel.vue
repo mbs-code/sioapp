@@ -57,12 +57,12 @@
 </template>
 
 <script>
-import linkable from '../mixins/linkable'
-import responsible from '../mixins/responsible'
-import stringFilters from '../mixins/stringFilters'
+import linkable from '@/mixins/linkable'
+import responsible from '@/mixins/responsible'
+import stringFilters from '@/mixins/stringFilters'
 
-import Media from '../components/parts/Media'
-import LinkedCard from '../components/parts/LinkedCard'
+import Media from '@/components/parts/Media'
+import LinkedCard from '@/components/parts/LinkedCard'
 
 export default {
   components: {

@@ -38,11 +38,11 @@
 </template>
 
 <script>
-import stringFilters from '../../mixins/stringFilters'
-import htmlHistory from '../../mixins/htmlHistory'
+import stringFilters from '@/mixins/stringFilters'
+import htmlHistory from '@/mixins/htmlHistory'
 
-import ChannelList from '../../components/ChannelList'
-import Loading from '../../components/parts/Loading'
+import ChannelList from '@/components/channels/ChannelList'
+import Loading from '@/components/parts/Loading'
 
 export default {
   components: { Loading, ChannelList },

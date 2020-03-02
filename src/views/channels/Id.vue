@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import ChannelPanel from '../../components/ChannelPanel'
-import ChannelInfoTable from '../../components/ChannelInfoTable'
-import ChannelGraph from '../../components/ChannelGraph'
+import ChannelPanel from '@/components/channels/ChannelPanel'
+import ChannelInfoTable from '@/components/channels/ChannelInfoTable'
+import ChannelGraph from '@/components/channels/ChannelGraph'
 
 export default {
   components: { ChannelPanel, ChannelInfoTable, ChannelGraph },

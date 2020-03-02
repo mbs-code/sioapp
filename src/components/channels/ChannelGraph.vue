@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import stringFilters from '../mixins/stringFilters'
+import stringFilters from '@/mixins/stringFilters'
 export default {
 
   mixins: [stringFilters],

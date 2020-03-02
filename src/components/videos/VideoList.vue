@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import VideoPanel from './VideoPanel'
+import VideoPanel from '@/components/videos/VideoPanel'
 
 export default {
   components: { VideoPanel },
