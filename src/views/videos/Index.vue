@@ -29,29 +29,30 @@
       v-spacer
 
       v-col(cols='auto')
-        v-pagination(v-model='page' :length='totalPages' total-visible='7' @input='onSearch')
+        v-pagination(v-model='search.page' :length='totalPages' total-visible='7' @input='onSearch')
 
       v-col(cols='auto')
         //- 色合いが微妙なので css で弄る (v-item--active)
-        v-btn-toggle.extend(v-model='listMode' dense color='primary')
-          v-btn(color='white' elevation='2')
-            v-icon(small) mdi-view-grid
+        v-btn-toggle.extend(v-model='search.grid' dense color='primary' @change='writeUrlQuery(search)')
           v-btn(color='white' elevation='2')
             v-icon(small) mdi-view-list
+          v-btn(color='white' elevation='2')
+            v-icon(small) mdi-view-grid
 
     //- main
-    VideoList(:videos='videos' :showGrid='listMode === 0' :imageWidth='320')
+    VideoList(:videos='videos' :showGrid='search.grid === 1' :imageWidth='320')
 
     //- footer
     v-row.mx-2(no-gutters align='center' justify='center')
       v-col(cols='auto')
-        v-pagination(v-model='page' :length='totalPages' total-visible='7' @input='onSearch')
+        v-pagination(v-model='search.page' :length='totalPages' total-visible='7' @input='onSearch')
 
     Loading(:show='showLoading')
 </template>
 
 <script>
 import stringFilters from '../../mixins/stringFilters'
+import htmlHistory from '../../mixins/htmlHistory'
 
 import VideoList from '../../components/VideoList'
 import Loading from '../../components/parts/Loading'
@@ -59,33 +60,55 @@ import Loading from '../../components/parts/Loading'
 export default {
   components: { Loading, VideoList },
 
-  mixins: [stringFilters],
+  mixins: [stringFilters, htmlHistory],
 
   data: function() {
     return {
       search: {
-        text: '',
+        page: 1,
         type: [],
-        status: []
+        status: [],
+        text: '',
+        grid: 0 // 0:list, 1:grid
       },
-      showLoading: true, // loading flag
-      listMode: 1, // 0: grid, 1:list
       videos: [],
-      page: 1, // 表示しているページ番号
       requestTime: 0, // 実処理時間
       totalPages: 0, // 全ページ数
-      totalLength: 0 // 全件数
+      totalLength: 0, // 全件数
+      showLoading: true // loading flag
     };
   },
+
+  async beforeRouteUpdate (to, from, next) {
+    await this.initPage()
+    next()
+  },
+
   created: async function() {
-    await this.getDataFromApi()
+    await this.initPage()
   },
 
   methods: {
-    onSearch() {
-      this.getDataFromApi()
+    // ページの初期化
+    async initPage () {
+      this.loadUrlQuery((params) => {
+        this.search.page = Number(params.page) || 1
+        this.search.text = params.text || undefined
+        this.search.type = this.normalizeArray(params.type)
+        this.search.status = this.normalizeArray(params.status)
+        this.search.grid = Number(params.grid) || 0
+      })
+      await this.getDataFromApi()
+      this.writeUrlQuery(this.search)
     },
 
+    // 検索実行
+    onSearch() {
+      this.getDataFromApi()
+      this.writeUrlQuery(this.search)
+    },
+
+    // API を叩いてデータを取ってくる
     async getDataFromApi() {
       const ts = new Date()
       this.showLoading = true
@@ -96,14 +119,14 @@ export default {
             text: this.search.text,
             type: this.search.type,
             status: this.search.status,
-            page: this.page,
+            page: this.search.page,
             sort: 'startTime',
             order: 'desc'
           }
         })
 
         this.videos = data.items
-        this.page = Number(data.page)
+        this.search.page = Number(data.page)
         this.totalPages = data.totalPages
         this.totalLength = data.totalLength
         this.requestTime = new Date() - ts
