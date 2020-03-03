@@ -1,6 +1,6 @@
 <template lang="pug">
   v-app
-    v-app-bar(app color='pink lighten-5' dense clipped-left elevation='2')
+    v-app-bar(app color='pink lighten-4' dense clipped-left elevation='2')
       v-app-bar-nav-icon(@click.stop='drawer = !drawer')
       v-toolbar-title
         v-icon.mr-2 mdi-shaker-outline
@@ -11,7 +11,7 @@
       v-btn(icon)
         v-icon mdi-magnify
 
-    v-navigation-drawer(app v-model='drawer' :mini-variant='mini' mobile-break-point='600' clipped)
+    v-navigation-drawer(app color='pink lighten-5' v-model='drawer' :mini-variant='mini' mobile-break-point='600' clipped)
       v-list
         template(v-for='(item, key) in items' :keys='key')
           v-list-item(link :to='item.to' :exact='item.exact')
