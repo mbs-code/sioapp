@@ -1,7 +1,8 @@
 const path = require('path')
 
+const publicPath = process.env.NODE_ENV ? '/' : './'
 module.exports = {
-  publicPath: './',
+  publicPath: publicPath,
   devServer: {
     proxy: {
       '/api': {
