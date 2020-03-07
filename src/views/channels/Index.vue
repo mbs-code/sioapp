@@ -6,6 +6,9 @@
         v-text-field(label='search' v-model='search.text' @change='onSearch')
 
       v-col.mx-2(cols='auto')
+        v-checkbox(v-model='search.fulltext' label='全文検索' @change='writeUrlQuery(search)')
+
+      v-col.mx-2(cols='auto')
         v-btn(@click='onSearch') q
 
     //- header
@@ -54,6 +57,7 @@ export default {
       search: {
         page: 1,
         text: '',
+        fulltext: false,
         grid: 0 // 0:list, 1:grid
       },
       channels: [],
@@ -79,6 +83,7 @@ export default {
       this.loadUrlQuery((params) => {
         this.search.page = Number(params.page) || 1
         this.search.text = params.text || undefined
+        this.search.fulltext = Boolean(params.fulltext)
         this.search.grid = Number(params.grid) || 0
       })
       await this.getDataFromApi()
@@ -101,6 +106,7 @@ export default {
           params: {
             text: this.search.text,
             page: this.search.page,
+            fulltext: this.search.fulltext,
             sort: 'publishedAt',
             order: 'asc'
           }

@@ -1,5 +1,6 @@
 import queryString from 'query-string'
 
+const ignoreValues = [undefined, null, 0, false]
 export default {
   
   methods: {
@@ -12,8 +13,11 @@ export default {
       // null と 0 の削除
       const values = Object.assign({}, params)
       for (const key of Object.keys(values)) {
-        if (values[key] === undefined || values[key] === null || values[key] === 0) {
-          delete values[key]
+        for (const ignore of ignoreValues) {
+          if (values[key] === ignore) {
+            delete values[key]
+            break
+          }
         }
       }
 

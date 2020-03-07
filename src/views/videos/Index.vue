@@ -6,6 +6,9 @@
         v-text-field(label='search' v-model='search.text' @change='onSearch')
 
       v-col.mx-2(cols='auto')
+        v-checkbox(v-model='search.fulltext' label='全文検索' @change='writeUrlQuery(search)')
+
+      v-col.mx-2(cols='auto')
         v-btn-toggle(v-model='search.type' color='primary' dense multiple @change='onSearch')
           v-btn(value='video' elevation='2') 動画
           v-btn(value='upcoming' elevation='2') 予約
@@ -69,6 +72,7 @@ export default {
         type: [],
         status: [],
         text: '',
+        fulltext: false,
         grid: 0 // 0:list, 1:grid
       },
       videos: [],
@@ -96,6 +100,7 @@ export default {
         this.search.text = params.text || undefined
         this.search.type = this.normalizeArray(params.type)
         this.search.status = this.normalizeArray(params.status)
+        this.search.fulltext = Boolean(params.fulltext)
         this.search.grid = Number(params.grid) || 0
       })
       await this.getDataFromApi()
@@ -120,6 +125,7 @@ export default {
             type: this.search.type,
             status: this.search.status,
             page: this.search.page,
+            fulltext: this.search.fulltext,
             sort: 'startTime',
             order: 'desc'
           }
