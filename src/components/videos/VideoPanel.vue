@@ -149,8 +149,8 @@ export default {
           return { color: 'blue', textColor: 'white', text: '公開' }
         case 'unlisted':
           return { color: 'red', textColor: 'white', text: '限定公開' }
-        case 'delete':
-          return { color: 'black', textColor: 'white', text: '削除' }
+        case 'private':
+          return { color: 'black', textColor: 'white', text: '非公開' }
 
         // type
         case 'upcoming':
