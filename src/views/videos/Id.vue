@@ -3,24 +3,31 @@
     v-col
       VideoPanel(:video='video' imageWidth='285')
     
-    //- v-col
-    //-   ChannelInfoTable(:channel='channel')
+    v-col
+      v-card
+        v-card-text
+          VideoInfoTable(:video='video')
 
-    //- v-col
-    //-   ChannelGraph(:stats='stats')
+    v-col
+      v-card
+        v-card-title 一週間の動向
+        v-card-text
+          VideoChart(:stats='stats')
 
-    //- v-card
-    //-   template(v-for='(stat, key) in stats' :keys='key')
-    //-     div {{ stat }}
+    v-col
+      v-card
+        v-card-title 概要
+        v-card-text(style="white-space:pre-wrap;" v-text='video.description')
+
 </template>
 
 <script>
 import VideoPanel from '@/components/videos/VideoPanel'
-// import ChannelInfoTable from '../../components/ChannelInfoTable'
-// import ChannelGraph from '../../components/ChannelGraph'
+import VideoInfoTable from '@/components/videos/VideoInfoTable'
+import VideoChart from '@/components/videos/VideoChart'
 
 export default {
-  components: { VideoPanel },
+  components: { VideoPanel, VideoInfoTable, VideoChart },
   
   data: function () {
     return {
