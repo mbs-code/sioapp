@@ -6,7 +6,7 @@
         height='200'
         type='line'
         :options='baseOptions(chart.name, chart.color)'
-        :series='baseSeries(chart.series)'
+        :series='baseSeries(chart.name, chart.parser)'
       )
 
 </template>
@@ -28,20 +28,21 @@ export default {
   data: function () {
     return {
       charts: [
-        { name: '登録者数', color: '#008FFB', series: 'subscriber' },
-        { name: '再生数', color: '#00E396', series: 'view' },
-        { name: '動画数', color: '#546E7A', series: 'video' }
+        { name: '登録者数', color: '#008FFB', parser: (item) => item['subscriber'] },
+        { name: '再生数', color: '#00E396', parser: (item) => item['view']},
+        { name: '動画数', color: '#546E7A', parser: (item) => item['video'] }
       ]
     }
   },
 
   methods: {
-    baseSeries(key) {
+    baseSeries(title, parser) {
       return [{
+        name: title,
         data: this.stats.map(e => {
           return [
             new Date(e.createdAt).getTime(),
-            e[key]
+            parser(e)
           ]
         })
       }]
@@ -57,7 +58,12 @@ export default {
           id: 'channelStat',
           group: 'channelStat',
           toolbar: {
-            show: false
+            tools: {
+              pan: false,
+              zoomin: false,
+              zoomout: false,
+              download: false
+            }
           }
         },
         colors: [color],
