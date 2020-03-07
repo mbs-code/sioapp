@@ -72,9 +72,9 @@ export default {
         grid: 0 // 0:list, 1:grid
       },
       videos: [],
-      requestTime: 0, // 実処理時間
       totalPages: 0, // 全ページ数
       totalLength: 0, // 全件数
+      requestTime: 0, // 実処理時間
       showLoading: true // loading flag
     };
   },
