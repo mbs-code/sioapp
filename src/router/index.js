@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
+import Activity from '@/views/Activity.vue'
 import Channels from '@/views/channels/Index'
 import Channel from '@/views/channels/Id'
 import Videos from '@/views/videos/Index'
@@ -13,6 +14,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/activity',
+    name: 'activity',
+    component: Activity
   },
   {
     path: '/channels',
