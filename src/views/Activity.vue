@@ -79,7 +79,7 @@ export default {
             sort: 'startTime',
             order: 'asc',
             start: new Date(),
-            end: this.formatLocalDatetime(dateFns.addHours(new Date(), 2), 'yyyy-MM-dd HH:mm:ss') // 二時間後
+            end: this.formatDatetime(dateFns.addHours(new Date(), 2), 'yyyy-MM-dd HH:mm:ss') // 二時間後
           }
         })
 

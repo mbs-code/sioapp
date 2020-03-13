@@ -25,16 +25,9 @@ const formatNumber = function(val, digit = 0) {
   return dg
 }
 
-const formatLocalDatetime = function(val) {
+const formatDatetime = function(val, fotmat = 'yyyy-MM-dd(E) HH:mm:ss') {
   if (val) {
-    return dateFns.format(new Date(val), 'yyyy-MM-dd HH:mm:ss', { locale: ja })
-  }
-  return '-'
-}
-
-const formatDatetime = function(val) {
-  if (val) {
-    return dateFns.format(new Date(val), 'yyyy-MM-dd(E) HH:mm:ss', { locale: ja })
+    return dateFns.format(new Date(val), fotmat, { locale: ja })
   }
   return '-'
 }
@@ -67,7 +60,6 @@ const funcs = {
   formatNumberDigit,
   formatNumberFixed,
   formatNumber,
-  formatLocalDatetime,
   formatDatetime,
   formatHumanize,
   formatDatetimeHumanize,
