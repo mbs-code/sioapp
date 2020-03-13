@@ -28,6 +28,7 @@ export default {
   data: function () {
     return {
       charts: [
+        { name: '同時接続数', color: '#008FFB', parser: (item) => item['concurrentViewers'] },
         { name: '再生数', color: '#00E396', parser: (item) => item['view'] },
         { name: '高評価数', color: '#F44336', parser: (item) => item['like'] },
         { name: '高評価率', color: '#9C27B0', parser: (item) => {
@@ -73,9 +74,8 @@ export default {
         },
         colors: [color],
         xaxis: {
-          type: 'datetime',
           labels: {
-            format: 'MM/dd hh:mm'
+            formatter: (val) => this.formatDatetime(val, 'M/d HH:mm')
           }
         },
         yaxis: {
