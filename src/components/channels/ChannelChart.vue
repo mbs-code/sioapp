@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { addHours } from 'date-fns'
 import humanFormat from 'human-format'
 import stringFilters from '@/mixins/stringFilters'
 export default {
@@ -25,13 +26,14 @@ export default {
     },
   },
 
-  data: function () {
-    return {
-      charts: [
+  computed: {
+    charts: function () {
+      const charts = [
         { name: '登録者数', color: '#008FFB', parser: (item) => item['subscriber'] },
         { name: '再生数', color: '#00E396', parser: (item) => item['view']},
         { name: '動画数', color: '#546E7A', parser: (item) => item['video'] }
       ]
+      return charts
     }
   },
 
@@ -40,8 +42,9 @@ export default {
       return [{
         name: title,
         data: this.stats.map(e => {
+          const jst = addHours(new Date(e.createdAt), 9)
           return [
-            new Date(e.createdAt).getTime(),
+            jst.getTime(),
             parser(e)
           ]
         })
@@ -70,7 +73,7 @@ export default {
         xaxis: {
           type: 'datetime',
           labels: {
-            format: 'MM/dd hh:mm'
+            format: 'M/d H:mm'
           }
         },
         yaxis: {
@@ -82,7 +85,7 @@ export default {
         tooltip: {
           x: {
             show: false,
-            format: 'MM/dd hh:mm'
+            format: 'M/d H:mm'
           },
           y: {
             formatter: (val) => val.toLocaleString()

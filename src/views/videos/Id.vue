@@ -12,7 +12,7 @@
       v-card
         v-card-title 一週間の動向
         v-card-text
-          VideoChart(:stats='stats')
+          VideoChart(:stats='stats' :showCV='video.type !== "video"')
 
     v-col
       v-card

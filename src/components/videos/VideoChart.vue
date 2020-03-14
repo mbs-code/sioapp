@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { addHours } from 'date-fns'
 import humanFormat from 'human-format'
 import stringFilters from '@/mixins/stringFilters'
 export default {
@@ -23,12 +24,15 @@ export default {
       type: Array,
       default: () => []
     },
+    showCV: {
+      type: Boolean,
+      default: () => false
+    }
   },
 
-  data: function () {
-    return {
-      charts: [
-        { name: '同時接続数', color: '#008FFB', parser: (item) => item['concurrentViewers'] },
+  computed: {
+    charts: function () {
+      const charts = [
         { name: '再生数', color: '#00E396', parser: (item) => item['view'] },
         { name: '高評価数', color: '#F44336', parser: (item) => item['like'] },
         { name: '高評価率', color: '#9C27B0', parser: (item) => {
@@ -36,8 +40,13 @@ export default {
           if (item.like === 0) goodRate = 0
           if (item.dislike === 0) goodRate = 100
           return goodRate
-        }},
+        }}
       ]
+
+      if (this.showCV) {
+        charts.unshift({ name: '同時接続数', color: '#008FFB', parser: (item) => item['concurrentViewers'] })
+      }
+      return charts
     }
   },
 
@@ -46,8 +55,9 @@ export default {
       return [{
         name: title,
         data: this.stats.map(e => {
+          const jst = addHours(new Date(e.createdAt), 9)
           return [
-            new Date(e.createdAt).getTime(),
+            jst.getTime(),
             parser(e)
           ]
         })
@@ -74,8 +84,9 @@ export default {
         },
         colors: [color],
         xaxis: {
+          type: 'datetime',
           labels: {
-            formatter: (val) => this.formatDatetime(val, 'M/d HH:mm')
+            format: 'M/d H:mm'
           }
         },
         yaxis: {
@@ -87,7 +98,7 @@ export default {
         tooltip: {
           x: {
             show: false,
-            format: 'MM/dd hh:mm'
+            format: 'M/d H:mm'
           },
           y: {
             formatter: (val) => val.toLocaleString()
