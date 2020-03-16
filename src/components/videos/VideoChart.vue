@@ -1,13 +1,14 @@
 <template lang="pug">
-  div(v-if='stats && stats.length > 0')
+  v-row(no-gutters v-if='stats && stats.length > 0')
     template(v-for='(chart, key) in charts' :keys='key')
-      v-apexchart(
-        width='100%'
-        height='200'
-        type='line'
-        :options='baseOptions(chart.name, chart.color)'
-        :series='baseSeries(chart.name, chart.parser)'
-      )
+      v-col(cols='12' lg='6')
+        v-apexchart(
+          width='100%'
+          height='200'
+          type='line'
+          :options='baseOptions(chart.name, chart.color)'
+          :series='baseSeries(chart.name, chart.parser)'
+        )
 
 </template>
 

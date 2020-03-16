@@ -11,6 +11,12 @@
           td チャンネルID
           td {{ channel.key }}
         tr
+          td タグ
+          td(style='max-width: 0') {{ channel.tags | arrayDump }}
+        tr
+          td 公開日時
+          td {{ channel.publishedAt | formatDatetimeHumanize }}
+        tr
           td DB登録日
           td {{ channel.createdAt | formatDatetimeHumanize }}
         tr
@@ -28,6 +34,15 @@ export default {
     channel: {
       type: Object,
       default: () => {}
+    }
+  },
+
+  filters: {
+    arrayDump (vals) {
+      if (vals && Array.isArray(vals) && vals.length > 0) {
+        return vals.join(', ')
+      }
+      return '-'
     }
   }
 }

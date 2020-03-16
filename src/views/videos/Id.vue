@@ -1,23 +1,24 @@
 <template lang="pug">
-  v-row
-    v-col
-      VideoPanel(:video='video' imageWidth='285')
+  v-container(fluid)
+    v-row.ma-n2
+      v-col(cols='12')
+        VideoPanel(:video='video' imageWidth='285')
+      
+      v-col(cols='12' md='6')
+        v-card
+          v-card-text
+            VideoInfoTable(:video='video')
+
+      v-col(cols='12' md='6')
+        v-card
+          v-card-title 一週間の動向
+          v-card-text
+            VideoChart(:stats='stats' :showCV='video.type !== "video"')
     
-    v-col
-      v-card
-        v-card-text
-          VideoInfoTable(:video='video')
-
-    v-col
-      v-card
-        v-card-title 一週間の動向
-        v-card-text
-          VideoChart(:stats='stats' :showCV='video.type !== "video"')
-
-    v-col
-      v-card
-        v-card-title 概要
-        v-card-text(style="white-space:pre-wrap;" v-text='video.description')
+      v-col(cols='12')
+        v-card
+          v-card-title 概要
+          v-card-text(style="white-space:pre-wrap;" v-text='video.description')
 
 </template>
 
