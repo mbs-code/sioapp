@@ -11,7 +11,16 @@
       v-btn(icon)
         v-icon mdi-magnify
 
-    v-navigation-drawer(app color='pink lighten-5' v-model='drawer' :mini-variant='mini' mobile-break-point='600' clipped)
+    v-navigation-drawer(
+      app
+      color='pink lighten-5'
+      v-model='drawer'
+      mobile-break-point='600'
+      clipped
+      :mini-variant='mini'
+      :temporary='!mini'
+      :expand-on-hover='mini'
+    )
       v-list
         template(v-for='(item, key) in items' :keys='key')
           v-list-item(link :to='item.to' :exact='item.exact')
@@ -20,8 +29,12 @@
             v-list-item-content
               v-list-item-title {{ item.title }}
       template(v-slot:append)
-        div.pa-2
-          v-switch(v-model='mini' :label='mini ? "" : "折りたたむ"')
+        v-list-item
+          v-list-item-icon
+            v-switch.ml-n2(v-model='mini')
+          v-list-item-content.ml-n4.ellipsis 折りたたむ
+        //- div.pa-2
+        //-   v-switch(v-model='mini' :label='mini ? "" : "折りたたむ"')
 
     v-content
       router-view
@@ -64,3 +77,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
