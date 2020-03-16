@@ -27,7 +27,9 @@ const formatNumber = function(val, digit = 0) {
 
 const formatDatetime = function(val, fotmat = 'yyyy-MM-dd(E) HH:mm:ss') {
   if (val) {
-    return dateFns.format(new Date(val), fotmat, { locale: ja })
+    try {
+      return dateFns.format(new Date(val), fotmat, { locale: ja })
+    } catch (err) { /**/ }
   }
   return '-'
 }
@@ -38,9 +40,12 @@ const formatHumanize = function(val) {
   return '-'
 }
 const formatDatetimeHumanize = function(val) {
-  const dt = formatDatetime(val)
-  const hn = formatHumanize(val)
-  return `${dt} (${hn})`
+  if (val) {
+    const dt = formatDatetime(val)
+    const hn = formatHumanize(val)
+    return `${dt} (${hn})`
+  }
+  return '-'
 }
 
 const formatDuration = function(val) {
