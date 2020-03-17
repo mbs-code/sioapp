@@ -161,6 +161,9 @@ export default {
           return { color: 'green', textColor: 'white', text: 'アーカイブ' }
         case 'video':
           return { color: 'indigo', textColor: 'white', text: '動画' }
+        case 'premiere':
+          return { color: 'purple', textColor: 'white', text: 'プレミア動画' }
+
         default:
           return { color: 'grey lighten-3', textColor: 'black', text: val }
       }

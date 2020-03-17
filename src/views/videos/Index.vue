@@ -10,10 +10,11 @@
 
       v-col.mx-2(cols='auto')
         v-btn-toggle(v-model='search.type' color='primary' dense multiple @change='onSearch')
-          v-btn(value='video' elevation='2') 動画
           v-btn(value='upcoming' elevation='2') 予約
           v-btn(value='live' elevation='2') 配信中
           v-btn(value='archive' elevation='2') アーカイブ
+          v-btn(value='video' elevation='2') 動画
+          v-btn(value='premiere' elevation='2') プレミア動画
       
       v-col.mx-2(cols='auto')
         v-btn-toggle(v-model='search.status' color='primary' dense multiple @change='onSearch')
