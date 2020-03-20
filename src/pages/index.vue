@@ -1,17 +1,6 @@
-<template>
-  <div class="home">
-    <img src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<template lang="pug">
+  v-row
+    v-col
+      v-card
+        v-card-text Plz click left menus.
 </template>
-
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-export default {
-  name: 'home',
-  components: {
-    HelloWorld
-  }
-}
-</script>

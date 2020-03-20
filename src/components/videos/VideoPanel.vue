@@ -51,7 +51,7 @@
               Media.top-flat(
                 :image='channel.thumbnail'
                 :text='channel.title'
-                :to="{ name: 'channel-id', params: { id: channel.id }}"
+                :to="{ name: 'channels-id', params: { id: channel.id }}"
               )
 
 </template>

@@ -1,6 +1,3 @@
-<template>
-  <div>
-    <router-view/>
-    <p>This is a default layout</p>
-  </div>
+<template lang="pug">
+  router-view
 </template>

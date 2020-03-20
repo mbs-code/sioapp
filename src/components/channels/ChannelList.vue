@@ -5,7 +5,7 @@
         ChannelPanel.fill-height(
           :channel='channel'
           :imageWidth='imageWidth'
-          :to="{ name: 'channel-id', params: { id: channel.id }}"
+          :to="{ name: 'channels-id', params: { id: channel.id }}"
           ref='card'
         )
 
