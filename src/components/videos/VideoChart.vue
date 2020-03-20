@@ -36,6 +36,7 @@ export default {
       const charts = [
         { name: '再生数', color: '#00E396', parser: (item) => item['view'] },
         { name: '高評価数', color: '#F44336', parser: (item) => item['like'] },
+        { name: '低評価数', color: '#4336f4', parser: (item) => item['dislike'] },
         { name: '高評価率', color: '#9C27B0', parser: (item) => {
           let goodRate = (item.like / (item.like + item.dislike)) * 100
           if (item.like === 0) goodRate = 0
