@@ -3,6 +3,7 @@ const path = require('path')
 const publicPath = process.env.NODE_ENV ? '/' : './'
 module.exports = {
   publicPath: publicPath,
+
   devServer: {
     proxy: {
       '/api': {
@@ -12,15 +13,23 @@ module.exports = {
       }
     }
   },
+
   transpileDependencies: [
     'vuetify'
   ],
+
   configureWebpack: {
     resolve: {
       alias: {
         'vue$': 'vue/dist/vue.esm.js',
         '@': path.resolve(__dirname, 'src/')
       }
+    }
+  },
+
+  pluginOptions: {
+    autoRouting: {
+      chunkNamePrefix: 'page-'
     }
   }
 }
