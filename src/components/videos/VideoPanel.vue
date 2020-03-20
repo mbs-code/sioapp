@@ -120,8 +120,8 @@ export default {
       if (video.dislike === 0) goodRate = 100
 
       const cv = (video.type === 'live')
-        ? this.formatNumber(video.concurrentViewers) + `(${this.formatNumber(video.concurrentViewers)})`
-        : ((video.concurrentViewers) ? `(${this.formatNumber(video.concurrentViewers)})` : '-')
+        ? this.formatNumber(video.concurrentViewers) + `(${this.formatNumber(video.maxViewers)})`
+        : ((video.concurrentViewers) ? `(${this.formatNumber(video.maxViewers)})` : '-')
 
       ary.push({ icon: 'mdi-clock-outline', text: this.formatDatetimeHumanize(video.startTime) })
       ary.push({ icon: 'mdi-movie', text: this.formatDuration(video.duration) })
