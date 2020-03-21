@@ -1,5 +1,5 @@
 <template lang='pug'>
-  div
+  v-container(fluid)
     //- search panel
     v-row.mx-2(no-gutters align='center' justify='center')
       v-col.mx-2(cols='auto')

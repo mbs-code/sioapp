@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  v-container(fluid)
     //- header
     v-row.mx-2(no-gutters align='center' justify='center')
       v-col(cols='auto')
