@@ -15,7 +15,7 @@ const formatNumberDigit = function(val) {
 }
 const formatNumberFixed = function(val, digit = 0) {
   if (val) {
-    return roundTo(val, digit)
+    return roundTo(Number(val), digit)
   }
   return '-'
 }
