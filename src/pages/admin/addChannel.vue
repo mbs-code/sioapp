@@ -1,0 +1,97 @@
+<template lang="pug">
+  v-container
+    v-row.ma-n2
+      v-col(cols='12')
+        //- submit 抑制
+        v-form(ref='form' v-model='valid' @submit.prevent)
+            v-textarea(v-model='text' filled required
+              label='チャンネルIDを入力して下さい(半角スペース区切り)'
+              :rules="[rules.required]"
+            )
+
+            v-btn.primary(@click='onSubmit' :disabled='showLoading') 実行
+
+      template(v-if='resultMessage')
+        v-col(cols='12')
+          v-divider
+
+        v-col(cols='12')
+          v-card
+            v-card-title OUTPUT
+            v-card-text
+              p.text--primary(style="white-space:pre-wrap;" v-text='resultMessage')
+              ChannelList(:channels='channels' :showGrid='false' :imageWidth='200')
+
+    Loading(:show='showLoading')
+</template>
+
+<script>
+import stringFilters from '@/mixins/stringFilters'
+
+import ChannelList from '@/components/channels/ChannelList'
+import Loading from '@/components/parts/Loading'
+
+export default {
+  components: { ChannelList, Loading },
+
+  mixins: [stringFilters],
+
+  data: function () {
+    return {
+      valid: false,
+      text: '',
+      showLoading: false,
+      resultMessage: '',
+      channels: [],
+      rules: {
+        email: v => (v || '').match(/@/) || 'Please enter a valid email',
+        length: len => v => (v || '').length >= len || `Invalid character length, required ${len}`,
+        password: v => (v || '').match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/) ||
+          'Password must contain an upper case letter, a numeric character, and a special character',
+        required: v => !!v || 'この項目は必須です。',
+      },
+    }
+  },
+
+  methods: {
+    onSubmit() {
+      this.postDataToApi()
+    },
+    
+    // API を叩いてデータを取ってくる
+    async postDataToApi() {
+      const ts = new Date()
+      this.showLoading = true
+      this.resultMessage = ''
+      this.channels = []
+
+      try {
+        // validate
+        this.$refs.form.validate()
+        if (!this.valid) {
+          throw new Error('Validation error.')
+        }
+
+        // post
+        const { data: { message, inputIds, outputIds, items }} = await this.$http.post('admin/addChannel', {
+          text: this.text
+        })
+
+        this.requestTime = new Date() - ts
+        this.resultMessage = `${message}`
+          + `\ninput ids: [${inputIds.length}]`
+          + `- ${JSON.stringify(inputIds)}`
+          + `\noutput ids: [${outputIds.length}]`
+          + `- ${JSON.stringify(outputIds)}`
+        this.channels = items
+
+        this.$toast.info(message)
+      } catch (err) {
+        this.$toast.error(err)
+      } finally {
+        this.showLoading = false
+      }
+    }
+  }
+}
+</script>
