@@ -32,16 +32,16 @@ const router = new Router({
   ]
 })
 
-// eslint-disable-next-line no-unused-vars
 router.beforeEach((to, from, next) => {
   // ページにログインマークがあったら
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    console.log('- Requires auth page')
+    console.log('Requires auth page')
 
     // ログイン中か確認
     const isLogin = store.state.isLogin
     console.log('- login status:', isLogin)
     if (!isLogin) {
+      console.log('auto redirect')
       next({
         name: 'login',
         query: { redirect: to.fullPath }

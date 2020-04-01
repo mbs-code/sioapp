@@ -8,16 +8,23 @@
 
       v-spacer
 
-      template(v-if='isLogin')
-        div {{ loginUser.name }}
-        v-btn(icon @click='doLogout')
-          v-icon mdi-logout
-      template(v-else)
-        v-tooltip(bottom)
-          template(v-slot:activator='{ on }')
-            v-btn(icon @click='doLogin' v-on='on')
-              v-icon mdi-login
-          span Login
+      template(v-if='$route.name !== "login"')
+        template(v-if='isLogin')
+          v-sheet.pa-2(color='#fef6f9')
+            v-icon(left) mdi-account-circle
+            | {{ loginUser.name }}
+          v-tooltip(bottom)
+            template(v-slot:activator='{ on }')
+              v-btn(icon @click='doLogout' v-on='on')
+                v-icon mdi-logout
+            span Logout
+
+        template(v-else)
+          v-tooltip(bottom)
+            template(v-slot:activator='{ on }')
+              v-btn(icon @click='doLogin' v-on='on')
+                v-icon mdi-login
+            span Login
 
     v-navigation-drawer(
       app

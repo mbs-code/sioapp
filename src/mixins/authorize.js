@@ -22,7 +22,12 @@ export default {
       if (this.isLogin) {
         this.$store.dispatch('logout')
         this.$toast.info('ログアウトしました.')
-        this.$router.push({ name: 'index' })
+        
+        const route = this.$route
+        if (route.meta.requiresAuth) {
+          console.log('auto redirect')
+          this.$router.push({ name: 'index' })
+        }
       }
     }
   }
