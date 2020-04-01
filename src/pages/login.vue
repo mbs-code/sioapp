@@ -3,8 +3,14 @@
     v-row.ma-n2
       v-col
         v-form(ref='form' v-model='valid' @submit.prevent)
-          v-text-field(v-model='username' label='username')
-          v-text-field(v-model='password' label='password' type='password')
+          v-text-field(v-model='username'
+            label='username'
+            :rules="[rules.required]"
+          )
+          v-text-field(v-model='password' type='password'
+            label='password'
+            :rules="[rules.required]"
+          )
 
           v-btn.primary(@click='onSubmit' :disabled='showLoading') ログイン
 
@@ -22,7 +28,10 @@ export default {
       valid: false,
       username: null,
       password: null,
-      showLoading: false
+      showLoading: false,
+      rules: {
+        required: v => !!v || 'この項目は必須です。',
+      },
     }
   },
   
