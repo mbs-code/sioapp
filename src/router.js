@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import routes from 'vue-auto-routing'
 import { createRouterLayout } from 'vue-router-layout'
 
+import store from '@/store'
+
 Vue.use(Router)
 
 const RouterLayout = createRouterLayout(layout => {
@@ -19,7 +21,7 @@ const fixRoutes = routes.map(e => {
   return e
 })
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -29,3 +31,24 @@ export default new Router({
     }
   ]
 })
+
+// eslint-disable-next-line no-unused-vars
+router.beforeEach((to, from, next) => {
+  // ページにログインマークがあったら
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    console.log('- Requires auth page')
+
+    // ログイン中か確認
+    const isLogin = store.state.isLogin
+    console.log('- login status:', isLogin)
+    if (!isLogin) {
+      next({
+        name: 'login',
+        query: { redirect: to.fullPath }
+      })
+    }
+  }
+  next()
+})
+
+export default router

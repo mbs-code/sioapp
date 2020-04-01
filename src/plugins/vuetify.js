@@ -24,8 +24,17 @@ Vue.use(VuetifyToast, {
     info: {
       // 5秒で消える
       icon: 'mdi-information',
-      textColor: 'red',
+      textColor: 'white',
       iconColor: 'blue',
+      timeout: 5000,
+      dismissable: true, // タッチで終了
+      showClose: false
+    },
+    success: {
+      // 5秒で消える
+      icon: 'mdi-information',
+      textColor: 'white',
+      iconColor: 'green',
       timeout: 5000,
       dismissable: true, // タッチで終了
       showClose: false

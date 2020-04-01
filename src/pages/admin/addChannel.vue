@@ -1,3 +1,7 @@
+<route-meta>
+  { "requiresAuth": true }
+</route-meta>
+
 <template lang="pug">
   v-container
     v-row.ma-n2
