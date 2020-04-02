@@ -1,5 +1,6 @@
 <template lang="pug">
   v-app
+    //- app header
     v-app-bar(app color='pink lighten-4' dense clipped-left elevation='2')
       v-app-bar-nav-icon(@click.stop='drawer = !drawer')
       v-toolbar-title
@@ -8,6 +9,7 @@
 
       v-spacer
 
+      //- login satatus
       template(v-if='$route.name !== "login"')
         template(v-if='isLogin')
           v-sheet.pa-2(color='#fef6f9')
@@ -26,6 +28,7 @@
                 v-icon mdi-login
             span Login
 
+    //- left drawer
     v-navigation-drawer(
       app
       color='pink lighten-5'
@@ -34,7 +37,6 @@
       clipped
       :mini-variant='mini'
       :temporary='!mini'
-      :expand-on-hover='mini'
     )
       v-list
         template(v-for='(item, key) in items' :keys='key')
@@ -51,6 +53,7 @@
         //- div.pa-2
         //-   v-switch(v-model='mini' :label='mini ? "" : "折りたたむ"')
 
+    //- main
     v-content
       router-view
 
