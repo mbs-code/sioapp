@@ -5,9 +5,17 @@
         VideoPanel(:video='video' imageWidth='285')
       
       v-col(cols='12' md='6')
-        v-card
-          v-card-text
-            VideoInfoTable(:video='video')
+        v-row(no-gutters)
+          v-col(cols='12')
+            v-card
+              v-card-text
+                VideoButtonPanel(:video='video')
+          
+        v-row
+          v-col(cols='12')
+            v-card
+              v-card-text
+                VideoInfoTable(:video='video')
 
       v-col(cols='12' md='6')
         v-card
@@ -24,11 +32,12 @@
 
 <script>
 import VideoPanel from '@/components/videos/VideoPanel'
+import VideoButtonPanel from '@/components/videos/VideoButtonPanel'
 import VideoInfoTable from '@/components/videos/VideoInfoTable'
 import VideoChart from '@/components/videos/VideoChart'
 
 export default {
-  components: { VideoPanel, VideoInfoTable, VideoChart },
+  components: { VideoPanel, VideoButtonPanel, VideoInfoTable, VideoChart },
   
   data: function () {
     return {
