@@ -8,29 +8,39 @@
       v-col.col-12
         v-card
           v-card-title
-              v-icon.mr-2 mdi-server
-              | Server Status
+            v-icon.mr-2 mdi-server
+            | Server Status
+            v-spacer
+            v-btn(icon @click='onSave')
+              v-icon mdi-floppy
+
           v-card-text
-            v-simple-table(dense)
+            v-simple-table
               tbody
                   tr
-                    td
+                    td.fix-width
+                      v-icon.mr-2 mdi-clock-outline
+                      | fetch time
+                    td {{ fetchDate | formatDatetime }}
+
+                  tr
+                    td.fix-width
                       v-icon.mr-2 mdi-table
                       | size
                     td
                       span.red--text {{ dbLength | SIFormat }}
                       |  ({{ dbLength | formatNumber }} byte)
-                    
+
                   tr
-                    td
+                    td.fix-width
                       v-icon.mr-2 mdi-database
                       | count
                     td {{ tables.length | formatNumber }}
-                    
+
                   tr
-                    td
+                    td.fix-width
                       v-icon.mr-2 mdi-update
-                      | request
+                      | request time
                     td {{ requestTime / 1000 | formatNumber(2) }} sec
 
       v-col.col-12
@@ -104,6 +114,8 @@ export default {
       dbName: '',
       dbLength: 0,
       tables: [],
+
+      fetchDate: {},
       requestTime: 0
     }
   },
@@ -130,6 +142,10 @@ export default {
   },
 
   methods: {
+    onSave () {
+      
+    },
+
     async getDataFromApi () {
       const ts = new Date()
       this.showLoading = true
@@ -142,6 +158,7 @@ export default {
         this.tables = tables
 
         this.requestTime = new Date() - ts
+        this.fetchDate = ts
       } catch (err) {
         this.$toast.error(err)
       } finally {
@@ -151,3 +168,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@media screen and (min-width: 1264px) { // lg
+  td.fix-width {
+    width: 200px;
+  }
+}
+</style>
