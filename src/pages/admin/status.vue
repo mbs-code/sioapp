@@ -11,17 +11,20 @@
             v-icon.mr-2 mdi-server
             | Server Status
             v-spacer
-            v-btn(icon @click='onSave')
-              v-icon mdi-floppy
+            v-tooltip(bottom)
+              template(v-slot:activator='{ on }')
+                v-btn(icon @click='onSave' v-on='on')
+                  v-icon mdi-floppy
+              span Save Image (実験的)
 
           v-card-text
             v-simple-table
               tbody
                   tr
                     td.fix-width
-                      v-icon.mr-2 mdi-clock-outline
-                      | fetch time
-                    td {{ fetchDate | formatDatetime }}
+                      v-icon.mr-2 mdi-tag-outline
+                      | name
+                    td.font-weight-bold {{ dbName }}
 
                   tr
                     td.fix-width
@@ -42,6 +45,12 @@
                       v-icon.mr-2 mdi-update
                       | request time
                     td {{ requestTime / 1000 | formatNumber(2) }} sec
+
+                  tr
+                    td.fix-width
+                      v-icon.mr-2 mdi-clock-outline
+                      | fetch time
+                    td {{ fetchDate | formatDatetime }}
 
       v-col.col-12
         v-divider
@@ -99,6 +108,8 @@
 
 <script>
 import humanFormat from 'human-format'
+import html2canvas from 'html2canvas'
+import delay from 'delay'
 import stringFilters from '@/mixins/stringFilters'
 
 import ChannelList from '@/components/channels/ChannelList'
@@ -142,8 +153,20 @@ export default {
   },
 
   methods: {
-    onSave () {
+    async onSave () {
+      await delay(1000) // ボタンが落ち着くまで待つ
+
+      const dom = document.querySelector('main') // .container にしたいけど表示がバグる
+      const canvas = await html2canvas(dom)
+      const url = canvas.toDataURL('image/png')
       
+      const date = this.formatDatetime(this.fetchDate, 'yyyyMMddHHmmss')
+      const title = `status_${this.dbName}_${date}.png`
+
+      const a = document.createElement('a')
+      a.href = url
+      a.setAttribute('download', title)
+      a.click()
     },
 
     async getDataFromApi () {
