@@ -6,10 +6,10 @@
   v-container
     v-row.ma-n2
       template(v-for='(item, key) in items' :keys='key')
-        v-col
+        v-col(cols='12')
           LinkedCard(:to='item.to' elevation='2')
             v-list-item
-             v-list-item-avatar(color='')
+             v-list-item-avatar
               v-icon {{ item.icon }}
              v-list-item-content
                v-list-item-title.headline {{ item.title }}
@@ -34,7 +34,7 @@ export default {
     return {
       items: [
         { title: 'チャンネル追加', icon: 'mdi-account-plus', text: '監視するチャンネルを追加します.', to: { name: 'admin-addChannel' } },
-        // { title: 'チャンネル追加', icon: 'mdi-account-plus', text: 'てきすとめっせーじ', to: { name: 'admin-addChannel' } },
+        { title: '鯖ステータス', icon: 'mdi-server', text: 'サーバーの状態を表示します', to: { name: 'admin-status' } }
       ]
     }
   }
