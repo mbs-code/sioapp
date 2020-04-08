@@ -111,6 +111,7 @@ import humanFormat from 'human-format'
 import html2canvas from 'html2canvas'
 import delay from 'delay'
 import stringFilters from '@/mixins/stringFilters'
+import authorize from '@/mixins/authorize'
 
 import ChannelList from '@/components/channels/ChannelList'
 import Loading from '@/components/parts/Loading'
@@ -118,7 +119,7 @@ import Loading from '@/components/parts/Loading'
 export default {
   components: { ChannelList, Loading },
 
-  mixins: [stringFilters],
+  mixins: [stringFilters, authorize],
 
   data: function () {
     return {
@@ -127,7 +128,8 @@ export default {
       tables: [],
 
       fetchDate: {},
-      requestTime: 0
+      requestTime: 0,
+      showLoading: true
     }
   },
   
@@ -184,6 +186,12 @@ export default {
         this.fetchDate = ts
       } catch (err) {
         this.$toast.error(err)
+        if (err.response) {
+          const code = err.response.status
+          if (code === 401) {
+            this.doLogin()
+          }
+        }
       } finally {
         this.showLoading = false
       }
