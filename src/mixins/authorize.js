@@ -1,7 +1,7 @@
 export default {
   computed: {
     isLogin () {
-      return this.$store.state.isLogin || false
+      return this.$store.getters.isLogin || false
     },
   
     loginUser () {

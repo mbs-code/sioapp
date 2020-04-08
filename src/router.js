@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
     console.log('Requires auth page')
 
     // ログイン中か確認
-    const isLogin = store.state.isLogin
+    const isLogin = store.getters.isLogin
     console.log('- login status:', isLogin)
     if (!isLogin) {
       console.log('auto redirect')

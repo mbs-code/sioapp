@@ -8,12 +8,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLogin: false,
+    doLogin: false,
     token: null,
+    issuedAt: null, // 発行日時
+    expiresIn: null, // 有効期限
     user : null
   },
+
   mutations: {
-    attach (state, { token, user }) {
+    attach (state, { user, token, issuedAt, expiresIn }) {
       if (!token) {
         throw new Error('Missing token!')
       }
@@ -22,33 +25,49 @@ export default new Vuex.Store({
         throw new Error('No user information!')
       }
 
-      state.isLogin = true
-      state.token = token
+      state.doLogin = true
       state.user = user
+      state.token = token
+      state.issuedAt = new Date(issuedAt * 1000)
+      state.expiresIn = new Date(expiresIn * 1000)
     },
     detach (state) {
-      state.isLogin = false
-      state.token = null
+      state.doLogin = false
       state.user = null
+      state.token = null
+      state.issuedAt = null
+      state.expiresIn = null
     }
   },
+
   actions: {
     async login ({ commit }, { username, password }) {
       console.log('vuex >', 'login')
-      const { data: { token, user } } = await axios.post('login', {
+      const { data: { user, token, issuedAt, expiresIn } } = await axios.post('login', {
         username: username,
         password: password
       })
 
-      commit('attach', { token, user })
+      commit('attach', { user, token, issuedAt, expiresIn })
     },
     logout ({ commit }) {
       console.log('vuex >', 'logout')
       commit('detach')
     }
   },
-  getters: {
 
+  getters: {
+    isLogin (state) {
+      const login = state.doLogin
+      if (login) {
+        // token の有効期限を確認する
+        const now = new Date()
+        const exp = state.ecpiresIn
+        return exp && (now > exp)
+      }
+      return false
+    }
   },
-  plugins: [createPersistedState()] // 永続化
+
+  plugins: [createPersistedState()] // æ°¸ç¶šåŒ–
 })
