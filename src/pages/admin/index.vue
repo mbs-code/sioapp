@@ -19,7 +19,6 @@
 
 <script>
 import stringFilters from '@/mixins/stringFilters'
-import htmlHistory from '@/mixins/htmlHistory'
 
 import ChannelList from '@/components/channels/ChannelList'
 import LinkedCard from '@/components/parts/LinkedCard'
@@ -28,7 +27,7 @@ import Loading from '@/components/parts/Loading'
 export default {
   components: { LinkedCard, Loading, ChannelList },
 
-  mixins: [stringFilters, htmlHistory],
+  mixins: [stringFilters],
 
   data: function () {
     return {

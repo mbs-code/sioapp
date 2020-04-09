@@ -31,6 +31,7 @@
 
 <script>
 import stringFilters from '@/mixins/stringFilters'
+import apiHandler from '@/mixins/apiHandler'
 
 import ChannelList from '@/components/channels/ChannelList'
 import Loading from '@/components/parts/Loading'
@@ -38,15 +39,14 @@ import Loading from '@/components/parts/Loading'
 export default {
   components: { ChannelList, Loading },
 
-  mixins: [stringFilters],
+  mixins: [stringFilters, apiHandler],
 
   data: function () {
     return {
       valid: false,
       text: '',
-      showLoading: false,
-      resultMessage: '',
       channels: [],
+      resultMessage: '',
       rules: {
         email: v => (v || '').match(/@/) || 'Please enter a valid email',
         length: len => v => (v || '').length >= len || `Invalid character length, required ${len}`,
@@ -64,12 +64,11 @@ export default {
     
     // API を叩いてデータを取ってくる
     async postDataToApi() {
-      const ts = new Date()
-      this.showLoading = true
-      this.resultMessage = ''
-      this.channels = []
+      this.apiHandler(async () => {
+        // init
+        this.channels = []
+        this.resultMessage = ''
 
-      try {
         // validate
         this.$refs.form.validate()
         if (!this.valid) {
@@ -81,20 +80,16 @@ export default {
           text: this.text
         })
 
-        this.requestTime = new Date() - ts
+        // set
+        this.channels = items
         this.resultMessage = `${message}`
           + `\ninput ids: [${inputIds.length}]`
           + `- ${JSON.stringify(inputIds)}`
           + `\noutput ids: [${outputIds.length}]`
           + `- ${JSON.stringify(outputIds)}`
-        this.channels = items
 
         this.$toast.info(message)
-      } catch (err) {
-        this.$toast.error(err)
-      } finally {
-        this.showLoading = false
-      }
+      })
     }
   }
 }

@@ -18,10 +18,14 @@
 </template>
 
 <script>
+import apiHandler from '@/mixins/apiHandler'
+
 import Loading from '@/components/parts/Loading'
 
 export default {
   components: { Loading },
+
+  mixins: [apiHandler],
 
   data: function () {
     return {
@@ -42,10 +46,7 @@ export default {
     
     // API を叩いてデータを取ってくる
     async postDataToApi() {
-      const ts = new Date()
-      this.showLoading = true
-
-      try {
+      this.apiHandler(async () => {
         // validate
         this.$refs.form.validate()
         if (!this.valid) {
@@ -58,17 +59,11 @@ export default {
           password: this.password,
         })
         this.$toast.success('ログインしました.')
-
+        
         // redirect
         const route = this.$route.query.redirect || { name: 'index' }
-        this.$router.push(route)
-
-        this.requestTime = new Date() - ts
-      } catch (err) {
-        this.$toast.error(err)
-      } finally {
-        this.showLoading = false
-      }
+        await this.$router.replace(route).catch(() => {})
+      })
     }
   }
 }

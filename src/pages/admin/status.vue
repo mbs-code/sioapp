@@ -111,7 +111,7 @@ import humanFormat from 'human-format'
 import html2canvas from 'html2canvas'
 import delay from 'delay'
 import stringFilters from '@/mixins/stringFilters'
-import authorize from '@/mixins/authorize'
+import apiHandler from '@/mixins/apiHandler'
 
 import ChannelList from '@/components/channels/ChannelList'
 import Loading from '@/components/parts/Loading'
@@ -119,17 +119,13 @@ import Loading from '@/components/parts/Loading'
 export default {
   components: { ChannelList, Loading },
 
-  mixins: [stringFilters, authorize],
+  mixins: [stringFilters, apiHandler],
 
   data: function () {
     return {
       dbName: '',
       dbLength: 0,
-      tables: [],
-
-      fetchDate: {},
-      requestTime: 0,
-      showLoading: true
+      tables: []
     }
   },
   
@@ -172,29 +168,13 @@ export default {
     },
 
     async getDataFromApi () {
-      const ts = new Date()
-      this.showLoading = true
-
-      try {
+      this.apiHandler(async () => {
         const { data: { name, length, tables }} = await this.$http.get(`admin/status`)
-
+        
         this.dbName = name
         this.dbLength = length
         this.tables = tables
-
-        this.requestTime = new Date() - ts
-        this.fetchDate = ts
-      } catch (err) {
-        this.$toast.error(err)
-        if (err.response) {
-          const code = err.response.status
-          if (code === 401) {
-            this.doLogin()
-          }
-        }
-      } finally {
-        this.showLoading = false
-      }
+      })
     }
   }
 }
