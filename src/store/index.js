@@ -49,6 +49,7 @@ export default new Vuex.Store({
       })
 
       commit('attach', { user, token, issuedAt, expiresIn })
+      console.log('- token expires in:', new Date(expiresIn * 1000).toLocaleString())
     },
     logout ({ commit }) {
       console.log('vuex >', 'logout')
@@ -58,16 +59,17 @@ export default new Vuex.Store({
 
   getters: {
     isLogin (state) {
-      const login = state.doLogin
-      if (login) {
+      const doLogin = state.doLogin
+      const expiresIn = state.expiresIn
+      if (doLogin && expiresIn) {
         // token の有効期限を確認する
         const now = new Date()
-        const exp = state.ecpiresIn
-        return exp && (now > exp)
+        const exp = new Date(expiresIn)
+        return exp.getTime() > now.getTime() // exp のほうが大きいなら true
       }
       return false
     }
   },
 
-  plugins: [createPersistedState()] // æ°¸ç¶šåŒ–
+  plugins: [createPersistedState()] // localstorage 永続化
 })

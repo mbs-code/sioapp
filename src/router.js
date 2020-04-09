@@ -35,13 +35,12 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // ページにログインマークがあったら
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    console.log('Requires auth page')
-
     // ログイン中か確認
     const isLogin = store.getters.isLogin
-    console.log('- login status:', isLogin)
+    console.log('Requires auth page.', `login: ${isLogin}`)
+
     if (!isLogin) {
-      console.log('auto redirect')
+      console.log('- auto redirect')
       next({
         name: 'login',
         query: { redirect: to.fullPath }
