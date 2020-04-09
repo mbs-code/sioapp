@@ -32,6 +32,7 @@
 <script>
 import stringFilters from '@/mixins/stringFilters'
 import apiHandler from '@/mixins/apiHandler'
+import formValid from '@/mixins/formValid'
 
 import ChannelList from '@/components/channels/ChannelList'
 import Loading from '@/components/parts/Loading'
@@ -39,21 +40,14 @@ import Loading from '@/components/parts/Loading'
 export default {
   components: { ChannelList, Loading },
 
-  mixins: [stringFilters, apiHandler],
+  mixins: [stringFilters, apiHandler, formValid],
 
   data: function () {
     return {
       valid: false,
       text: '',
       channels: [],
-      resultMessage: '',
-      rules: {
-        email: v => (v || '').match(/@/) || 'Please enter a valid email',
-        length: len => v => (v || '').length >= len || `Invalid character length, required ${len}`,
-        password: v => (v || '').match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/) ||
-          'Password must contain an upper case letter, a numeric character, and a special character',
-        required: v => !!v || 'この項目は必須です。',
-      },
+      resultMessage: ''
     }
   },
 

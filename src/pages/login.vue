@@ -19,13 +19,14 @@
 
 <script>
 import apiHandler from '@/mixins/apiHandler'
+import formValid from '@/mixins/formValid'
 
 import Loading from '@/components/parts/Loading'
 
 export default {
   components: { Loading },
 
-  mixins: [apiHandler],
+  mixins: [apiHandler, formValid],
 
   data: function () {
     return {
