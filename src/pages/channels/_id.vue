@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import apiHandler from '@/mixins/apiHandler'
+
 import ChannelPanel from '@/components/channels/ChannelPanel'
 import ChannelInfoTable from '@/components/channels/ChannelInfoTable'
 import ChannelChart from '@/components/channels/ChannelChart'
@@ -32,6 +34,8 @@ import VideoList from '@/components/videos/VideoList'
 export default {
   components: { ChannelPanel, ChannelInfoTable, ChannelChart, VideoList },
   
+  mixins: [apiHandler],
+
   data: function () {
     return {
       channel: {},
@@ -46,14 +50,11 @@ export default {
 
   methods: {
     async getDataFromApi () {
-      const ts = new Date()
-      this.showLoading = true
-
-      try {
+      this.apiHandler(async () => {
         const id = this.$route.params.id
         const { data } = await this.$http.get(`channels/${id}`)
         const { data: stats } = await this.$http.get(`channels/${id}/stats`) // 統計情報
-        const { data: { items: videos }} = await this.$http.get(`videos`, { // アクティブvideo
+        const { data: { items: videos }} = await this.$http.get(`videos`, { // アクティブ video
           params: {
             channel: id,
             sort: 'startTime',
@@ -65,13 +66,7 @@ export default {
         this.channel = data
         this.stats = stats
         this.videos = videos
-
-        this.requestTime = new Date() - ts
-      } catch (err) {
-        this.$toast.error(err)
-      } finally {
-        this.showLoading = false
-      }
+      })
     }
   }
 

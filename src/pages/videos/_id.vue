@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import apiHandler from '@/mixins/apiHandler'
+
 import VideoPanel from '@/components/videos/VideoPanel'
 import VideoButtonPanel from '@/components/videos/VideoButtonPanel'
 import VideoInfoTable from '@/components/videos/VideoInfoTable'
@@ -39,6 +41,8 @@ import VideoChart from '@/components/videos/VideoChart'
 export default {
   components: { VideoPanel, VideoButtonPanel, VideoInfoTable, VideoChart },
   
+  mixins: [apiHandler],
+
   data: function () {
     return {
       video: {},
@@ -52,22 +56,14 @@ export default {
 
   methods: {
     async getDataFromApi () {
-      const ts = new Date()
-      this.showLoading = true
-
-      try {
+      this.apiHandler(async () => {
         const id = this.$route.params.id
         const { data } = await this.$http.get(`videos/${id}`)
         const { data: stats } = await this.$http.get(`videos/${id}/stats`)
 
         this.video = data
         this.stats = stats
-        this.requestTime = new Date() - ts
-      } catch (err) {
-        this.$toast.error(err)
-      } finally {
-        this.showLoading = false
-      }
+      })
     }
   }
 

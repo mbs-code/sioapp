@@ -42,6 +42,7 @@
 
 <script>
 import stringFilters from '@/mixins/stringFilters'
+import apiHandler from '@/mixins/apiHandler'
 import htmlHistory from '@/mixins/htmlHistory'
 
 import ChannelList from '@/components/channels/ChannelList'
@@ -50,7 +51,7 @@ import Loading from '@/components/parts/Loading'
 export default {
   components: { Loading, ChannelList },
 
-  mixins: [stringFilters, htmlHistory],
+  mixins: [stringFilters, apiHandler, htmlHistory],
 
   data: function () {
     return {
@@ -62,10 +63,8 @@ export default {
       },
       channels: [],
       totalPages: 0, // 全ページ数
-      totalLength: 0, // 全件数
-      requestTime: 0, // 実処理時間
-      showLoading: true // loading flag
-    };
+      totalLength: 0 // 全件数
+    }
   },
 
   async beforeRouteUpdate (to, from, next) {
@@ -98,11 +97,8 @@ export default {
 
     // API を叩いてデータを取ってくる
     async getDataFromApi() {
-      const ts = new Date()
-      this.showLoading = true
-
-      try {
-        const { data } = await this.$http.get('channels', {
+      this.apiHandler(async () => {
+        const { data: { items, page, totalPages, totalLength } } = await this.$http.get('channels', {
           params: {
             text: this.search.text,
             page: this.search.page,
@@ -112,16 +108,11 @@ export default {
           }
         })
 
-        this.channels = data.items
-        this.page = Number(data.page)
-        this.totalPages = data.totalPages
-        this.totalLength = data.totalLength
-        this.requestTime = new Date() - ts
-      } catch (err) {
-        this.$toast.error(err)
-      } finally {
-        this.showLoading = false
-      }
+        this.channels = items
+        this.page = Number(page)
+        this.totalPages = totalPages
+        this.totalLength = totalLength
+      })
     }
   }
 }

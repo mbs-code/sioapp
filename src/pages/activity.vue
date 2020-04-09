@@ -32,6 +32,7 @@
 <script>
 import * as dateFns from 'date-fns'
 import stringFilters from '@/mixins/stringFilters'
+import apiHandler from '@/mixins/apiHandler'
 import htmlHistory from '@/mixins/htmlHistory'
 
 import VideoList from '@/components/videos/VideoList'
@@ -40,7 +41,7 @@ import Loading from '@/components/parts/Loading'
 export default {
   components: { Loading, VideoList },
   
-  mixins: [stringFilters, htmlHistory],
+  mixins: [stringFilters, apiHandler, htmlHistory],
   
   data: function () {
     return {
@@ -61,10 +62,7 @@ export default {
 
   methods: {
     async getDataFromApi () {
-      const ts = new Date()
-      this.showLoading = true
-
-      try {
+      this.apiHandler(async () => {
         const { data: { items: liveVideos }} = await this.$http.get(`videos`, {
           params: {
             type: 'live',
@@ -83,29 +81,10 @@ export default {
             end: this.formatDatetime(dateFns.addHours(new Date(), 2), 'yyyy-MM-dd HH:mm:ss') // 二時間後
           }
         })
-
-        // const { data: { items: recentVideos }} = await this.$http.get(`videos`, {
-        //   params: {
-        //     type: ['video', 'archive'],
-        //     sort: 'maxViewers',
-        //     order: 'esc',
-        //     start: this.formatLocalDatetime(dateFns.subHours(new Date(), 6), 'yyyy-MM-dd HH:mm:ss'),
-        //     end: this.formatLocalDatetime(new Date())
-        //   }
-        // })
         
-
         this.livevideos = liveVideos
         this.upcomingVideos = upcomingVideos
-
-        this.requestTime = new Date() - ts
-        this.fetchDate = ts
-      } catch (err) {
-        this.$toast.error(err)
-        console.error(err)
-      } finally {
-        this.showLoading = false
-      }
+      })
     }
   }
 }
