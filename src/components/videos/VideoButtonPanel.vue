@@ -1,14 +1,21 @@
 <template lang="pug">    
   div
-    v-btn.mx-2(icon @click='doOpenPicture')
-      v-icon mdi-image
-    //- v-btn.mx-2(icon @click='doOpenMetaTable')
-    //-   v-icon mdi-table
+    template(v-for='(item, key) of items' :keys='key')
+      v-tooltip(bottom)
+        template(v-slot:activator='{ on }')
+          v-btn.mx-2(icon @click='item.onClick'  v-on='on')
+            v-icon {{ item.icon }}
+        span {{ item.title }}
 
+    VideoRecord(:show='showDialog' :video='video', @onClose='showDialog = !showDialog')
 </template>
 
 <script>
+import VideoRecord from '@/components/videos/VideoRecord'
+
 export default {
+  components: { VideoRecord },
+
   props: {
     video: {
       type: Object,
@@ -18,7 +25,11 @@ export default {
 
   data: function () {
     return {
-      stats: []
+      showDialog: false,
+      items: [
+        { icon: 'mdi-image', title: 'サムネを表示', onClick: this.doOpenPicture },
+        { icon: 'mdi-history', title: '更新履歴', onClick: this.doOpenRecords }
+      ]
     }
   },
 
@@ -28,22 +39,8 @@ export default {
       window.open(url, '_blank')
     },
 
-    async doOpenMetaTable () {
-      try {
-        const id = this.video.id
-        const { data } = await this.$http.get(`videos/${id}/metas`, {
-          params: {
-            all: true
-          }
-        })
-
-        this.stats = data.map(e => {
-          delete e.description
-          return e
-        })
-      } catch (err) {
-        this.$toast.error(err)
-      }
+    async doOpenRecords () {
+      this.showDialog = !this.showDialog
     }
   }
 }
