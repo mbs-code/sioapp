@@ -7,17 +7,17 @@
             v-icon {{ item.icon }}
         span {{ item.title }}
 
-    VideoRecord(:show='showDialog' :video='video', @onClose='showDialog = !showDialog')
+    ChannelRecord(:show='showDialog' :channel='channel', @onClose='showDialog = !showDialog')
 </template>
 
 <script>
-import VideoRecord from '@/components/videos/VideoRecord'
+import ChannelRecord from '@/components/channels/ChannelRecord'
 
 export default {
-  components: { VideoRecord },
+  components: { ChannelRecord },
 
   props: {
-    video: {
+    channel: {
       type: Object,
       default: () => {}
     }
@@ -28,6 +28,7 @@ export default {
       showDialog: false,
       items: [
         { icon: 'mdi-image', title: 'サムネイルを表示', onClick: this.doOpenThumbnail },
+        { icon: 'mdi-image', title: 'バナーを表示', onClick: this.doOpenBanner },
         { icon: 'mdi-history', title: '更新履歴', onClick: this.doOpenRecords }
       ]
     }
@@ -35,7 +36,12 @@ export default {
 
   methods: {
     doOpenThumbnail () {
-      const url = this.video.thumbnailHires
+      const url = this.channel.thumbnailHires
+      window.open(url, '_blank')
+    },
+
+    doOpenBanner () {
+      const url = this.channel.bannerHires
       window.open(url, '_blank')
     },
 

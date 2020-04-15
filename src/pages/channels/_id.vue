@@ -5,9 +5,17 @@
         ChannelPanel(:channel='channel' imageWidth='285')
     
       v-col(cols='12' md='6')
-        v-card
-          v-card-text
-            ChannelInfoTable(:channel='channel')
+        v-row(no-gutters)
+          v-col(cols='12')
+            v-card
+              v-card-text
+                ChannelButtonPanel(:channel='channel')
+
+        v-row
+          v-col(cols='12')
+            v-card
+              v-card-text
+                ChannelInfoTable(:channel='channel')
 
       v-col(cols='12' md='6')
         v-card
@@ -27,12 +35,13 @@
 import apiHandler from '@/mixins/apiHandler'
 
 import ChannelPanel from '@/components/channels/ChannelPanel'
+import ChannelButtonPanel from '@/components/channels/ChannelButtonPanel'
 import ChannelInfoTable from '@/components/channels/ChannelInfoTable'
 import ChannelChart from '@/components/channels/ChannelChart'
 import VideoList from '@/components/videos/VideoList'
 
 export default {
-  components: { ChannelPanel, ChannelInfoTable, ChannelChart, VideoList },
+  components: { ChannelPanel, ChannelButtonPanel, ChannelInfoTable, ChannelChart, VideoList },
   
   mixins: [apiHandler],
 
