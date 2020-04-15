@@ -52,6 +52,8 @@
                       | fetch time
                     td {{ fetchDate | formatDatetime }}
 
+            div ※ 1日程度の誤差があります.
+
       v-col.col-12
         v-divider
 
@@ -131,7 +133,8 @@ export default {
   
   computed: {
     sortTables () {
-      const keys = ['channels', 'channel_metas', 'channel_stats', 'videos', 'video_stats', 'video_metas']
+      const keys = ['channels', 'channel_stats', 'channel_metas', 'channel_records',
+        'videos', 'video_stats', 'video_metas', 'video_records', 'apps']
       const tables = this.tables
       return keys.map(key => {
         return tables.find(e => e.name == key) || {}
