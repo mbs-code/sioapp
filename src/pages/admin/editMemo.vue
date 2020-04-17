@@ -9,7 +9,7 @@
         //- submit 抑制
         v-form(ref='form' v-model='valid' @submit.prevent)
             v-textarea(v-model='text' filled required
-              label='チャンネルIDを入力して下さい(半角スペース区切り)'
+              label='メモ'
               :rules="[rules.required]"
             )
 
@@ -24,7 +24,6 @@
             v-card-title OUTPUT
             v-card-text
               p.text--primary(style="white-space:pre-wrap;" v-text='resultMessage')
-              ChannelList(:channels='channels' :showGrid='false' :imageWidth='200')
 
     Loading(:show='showLoading')
 </template>
@@ -46,21 +45,32 @@ export default {
     return {
       valid: false,
       text: '',
-      channels: [],
       resultMessage: ''
     }
+  },
+
+  created: async function() {
+    await this.getDataFromApi()
   },
 
   methods: {
     onSubmit() {
       this.postDataToApi()
     },
+
+    // API を叩いてデータを取ってくる
+    async getDataFromApi() {
+      this.apiHandler(async () => {
+        // post
+        const { data: { memo }} = await this.$http.get('apps')
+        this.text = memo || ''
+      })
+    },
     
     // API を叩いてデータを更新する
     async postDataToApi() {
       this.apiHandler(async () => {
         // init
-        this.channels = []
         this.resultMessage = ''
 
         // validate
@@ -70,19 +80,14 @@ export default {
         }
 
         // post
-        const { data: { message, inputIds, outputIds, items }} = await this.$http.post('admin/addChannel', {
-          text: this.text
+        const { data: { items }} = await this.$http.post('apps', {
+          keys: ['memo'],
+          memo: this.text
         })
 
         // set
-        this.channels = items
-        this.resultMessage = `${message}`
-          + `\ninput ids: [${inputIds.length}]`
-          + `- ${JSON.stringify(inputIds)}`
-          + `\noutput ids: [${outputIds.length}]`
-          + `- ${JSON.stringify(outputIds)}`
-
-        this.$toast.info(message)
+        this.resultMessage = items
+        this.$toast.info('success!')
       })
     }
   }
