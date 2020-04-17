@@ -133,8 +133,8 @@ export default {
   
   computed: {
     sortTables () {
-      const keys = ['channels', 'channel_stats', 'channel_metas', 'channel_records',
-        'videos', 'video_stats', 'video_metas', 'video_records', 'apps']
+      const keys = ['channels', 'channel_stats', 'channel_records',
+        'videos', 'video_stats', 'video_records', 'apps']
       const tables = this.tables
       return keys.map(key => {
         return tables.find(e => e.name == key) || {}
