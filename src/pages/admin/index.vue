@@ -34,7 +34,8 @@ export default {
       items: [
         { title: 'チャンネル追加', icon: 'mdi-account-plus', text: '監視するチャンネルを追加します.', to: { name: 'admin-addChannel' } },
         { title: '鯖ステータス', icon: 'mdi-server', text: 'サーバーの状態を表示します', to: { name: 'admin-status' } },
-        { title: 'アプリメモ', icon: 'mdi-note-text', text: 'トップページに表示されるメモを変更します.', to: { name: 'admin-editMemo' } }
+        { title: 'アプリメモ', icon: 'mdi-note-text', text: 'トップページに表示されるメモを変更します.', to: { name: 'admin-editMemo' } },
+        { title: 'ログ', icon: 'mdi-notebook-outline', text: 'ログを確認する.', to: { name: 'admin-log' } }
       ]
     }
   }
