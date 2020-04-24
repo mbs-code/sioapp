@@ -1,18 +1,25 @@
 <template lang="pug">
   v-app
-    //- app header
-    v-app-bar(app color='pink lighten-4' dense clipped-left elevation='2')
+    //- ■ app header
+    v-app-bar(
+      app
+      :color='(isLocal ? "green" : "pink") + " lighten-4"'
+      dense
+      clipped-left
+      elevation='2'
+    )
       v-app-bar-nav-icon(@click.stop='drawer = !drawer')
       v-toolbar-title
         v-icon.mr-2 mdi-shaker-outline
-        | sioapp
+        | schev
+        v-icon.ml-1(v-show='isLocal' color='pink' large) mdi-dev-to
 
       v-spacer
 
-      //- login satatus
+      //- login status
       template(v-if='$route.name !== "login"')
         template(v-if='isLogin')
-          v-sheet.pa-2(color='#fef6f9')
+          v-sheet.ml-2.pa-2(color='#fef6f9')
             v-icon(left) mdi-account-circle
             | {{ loginUser.name }}
           v-tooltip(bottom)
@@ -28,10 +35,10 @@
                 v-icon mdi-login
             span Login
 
-    //- left drawer
+    //- ■ left drawer
     v-navigation-drawer(
       app
-      color='pink lighten-5'
+      :color='(isLocal ? "green" : "pink") + " lighten-5"'
       v-model='drawer'
       mobile-break-point='600'
       clipped
@@ -50,10 +57,8 @@
           v-list-item-icon
             v-switch.ml-n2(v-model='mini')
           v-list-item-content.ml-n4.ellipsis 折りたたむ
-        //- div.pa-2
-        //-   v-switch(v-model='mini' :label='mini ? "" : "折りたたむ"')
 
-    //- main
+    //- ■ main
     v-content
       router-view
 
@@ -67,9 +72,14 @@ export default {
   mixins: [authorize],
 
   data: function () {
+    // debug 判定
+    const api = process.env.VUE_APP_API_ENDPOINT
+    const isLocal = api.includes('/localhost')
+
     return {
       drawer: false,
       mini: false, // 常にボタンだけモード
+      isLocal: isLocal, // localhost 接続なら true
       items: [
         { title: 'Home', icon: 'mdi-home', to: { name: 'index' }, exact: true },
         { title: 'アクティビティ', icon: 'mdi-calendar-check', to: { name: 'activity' }, exact: true },
@@ -81,6 +91,7 @@ export default {
   },
 
   mounted() {
+    // param の設定
     if (localStorage.drawer) {
       this.drawer = Boolean(localStorage.drawer)
     }
