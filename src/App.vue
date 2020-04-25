@@ -10,7 +10,7 @@
     )
       v-app-bar-nav-icon(@click.stop='drawer = !drawer')
       v-toolbar-title
-        v-icon.mr-2 mdi-shaker-outline
+        v-icon.mr-2 mdi-calendar
         | schev
         v-icon.ml-1(v-show='isLocal' color='pink' large) mdi-dev-to
 
