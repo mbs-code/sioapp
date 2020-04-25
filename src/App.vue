@@ -47,16 +47,22 @@
     )
       v-list
         template(v-for='(item, key) in items' :keys='key')
-          v-list-item(link :to='item.to' :exact='item.exact')
-            v-list-item-icon
-              v-icon {{ item.icon }}
-            v-list-item-content
-              v-list-item-title {{ item.title }}
+          v-tooltip(right :disabled='!mini')
+            template(v-slot:activator='{ on }')
+              v-list-item(link :to='item.to' :exact='item.exact' v-on='on')
+                v-list-item-icon
+                  v-icon {{ item.icon }}
+                v-list-item-content
+                  v-list-item-title {{ item.title }}
+            span {{ item.title }}
       template(v-slot:append)
-        v-list-item
-          v-list-item-icon
-            v-switch.ml-n2(v-model='mini')
-          v-list-item-content.ml-n4.ellipsis 折りたたむ
+        v-tooltip(right :disabled='!mini')
+          template(v-slot:activator='{ on }')
+            v-list-item(v-on='on')
+              v-list-item-icon
+                v-switch.ml-n2(v-model='mini' color='grey darken-2')
+              v-list-item-content.ml-n4.ellipsis 折りたたむ
+          span 展開する
 
     //- ■ main
     v-content
