@@ -87,7 +87,7 @@ export default {
       mini: false, // 常にボタンだけモード
       isLocal: isLocal, // localhost 接続なら true
       items: [
-        { title: 'Home', icon: 'mdi-home', to: { name: 'index' }, exact: true },
+        { title: 'ホーム', icon: 'mdi-home', to: { name: 'index' }, exact: true },
         { title: 'アクティビティ', icon: 'mdi-calendar-check', to: { name: 'activity' }, exact: true },
         { title: 'チャンネル', icon: 'mdi-youtube', to: { name: 'channels' } },
         { title: '動画', icon: 'mdi-video', to: { name: 'videos' } },

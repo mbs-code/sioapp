@@ -27,6 +27,15 @@ module.exports = {
     }
   },
 
+  chainWebpack: function (config) {
+    config
+      .plugin('html')
+      .tap((args) => {
+        args[0].title = 'schev'
+        return args
+      })
+  },
+
   pluginOptions: {
     autoRouting: {
       chunkNamePrefix: 'page-'
