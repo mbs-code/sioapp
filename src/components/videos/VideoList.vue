@@ -1,19 +1,21 @@
 <template lang="pug">
-  v-row.fill-height(no-gutters)
+  v-row(no-gutters align='stretch' justify='space-around' v-resize='onResize' ref='container')
     template(v-for='(video, key) in videos' :keys='key')
-      v-col.pa-2(:cols='showGrid ? 0 : 12')
-        VideoPanel.fill-height(
-          :video='video'
-          :imageWidth='imageWidth'
-          :to="{ name: 'videos-id', params: { id: video.id }}"
-          ref='card'
-        )
+      VideoPanel.ma-2(
+        :video='video'
+        :imageWidth='320'
+      )
+
+    //- flex padding
+    template(v-if='padCount > 0')
+      div.transparent(v-for='n in padCount' :style="{ width: spacerWidth + 'px' }")
 
 </template>
 
 <script>
-import VideoPanel from '@/components/videos/VideoPanel'
+import domCalculator from '@/lib/domCalculator'
 
+import VideoPanel from '@/components/videos/VideoSheet'
 export default {
   components: { VideoPanel },
 
@@ -32,21 +34,50 @@ export default {
     }
   },
 
-  watch: {
-    showGrid() {
-      this.callResize()
+  data: function () {
+    return {
+      spacerWidth: 0, // flexSpacer のサイズ
+      rowCount: 0, // 一行あたりの flexBox 配置数
+      padCount: 0 // flexSpacer の必要個数
     }
   },
 
+  watch: {
+    videos () {
+      // video が更新されたら layout を再計算
+      this.onResize()
+    }
+  },
+
+  async mounted () {
+    await this.onResize()
+  },
+
   methods: {
-    callResize() {
-      // TODO: できれば component 内部で resize 検知をしたい
-      const cards = this.$refs.card
-      if (Array.isArray(cards)) {
-        for (const card of cards) {
-          card.resetOnResize()
-        }
-      }
+    onResize() {
+      // flex padding の計算
+      this.spacerWidth = 0
+      this.rowCount = 0
+      this.padCount = 0
+
+      // DOM 描画待ち
+      this.$nextTick(() => {
+        const containerDom = this.$refs.container
+        const itemDom = containerDom.children[0] // 直接 ref で取れなかった…
+
+        if (itemDom) {
+            // real width の算出
+            const containerWidth = domCalculator.width(containerDom)
+            const itemWidth = domCalculator.width(itemDom)
+
+            this.spacerWidth = itemWidth
+            this.rowCount = Math.floor(containerWidth / itemWidth)
+
+            const mod = this.videos.length % this.rowCount
+            const count = (mod === 0) ? mod : this.rowCount - mod
+            this.padCount = count
+         }
+      })
     }
   }
 }
