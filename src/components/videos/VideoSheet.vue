@@ -17,7 +17,7 @@
                 :disabled='!overlayHover'
               )
                 v-row.flex-column.fill-height(no-gutters)
-                  //- - chip
+                  //- - chip (show indicator)
                   v-col.flex-grow-0.ma-2
                     template(v-for='(chip, key) in chips' :keys='key')
                       template(v-if='overlayHover')
@@ -27,7 +27,7 @@
                           v-avatar(:color='chip.color' size='24')
                             v-icon(small) {{ chip.icon }}
 
-                  //- - title
+                  //- - title (hide)
                   v-col.flex-grow-1.min-height-0
                     template(v-if='overlayHover')
                       v-row.ma-2.fill-height.overflow-y-auto.thin-scrollbar(no-gutters align='start' justify='center')
@@ -36,7 +36,7 @@
                   //- - buttons
                   v-col.flex-grow-0
                     v-row.flex-nowrap.ma-2(no-gutters)
-                      //- - - channel button (hide)
+                      //- - - channel button (always show)
                       v-col.flex-grow-0
                         v-tooltip(top color='orange darken-4')
                           template(v-slot:activator='{ on: btnOn }')
@@ -56,7 +56,7 @@
                         v-col.flex-grow-1.min-width-0
                           v-row.fill-height.pa-2(no-gutters align='center' justify='start')
                             div.text-truncate {{ video.channel.title }}
-                        //- - - detail button
+                        //- - - detail button (hide)
                         v-col.flex-grow-0
                           v-tooltip(top color='indigo darken-1')
                             template(v-slot:activator='{ on: btnOn }')

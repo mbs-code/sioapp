@@ -1,10 +1,8 @@
 <template lang="pug">
   v-row(no-gutters align='stretch' justify='space-around' v-resize='onResize' ref='container')
     template(v-for='(video, key) in videos' :keys='key')
-      VideoPanel.ma-2(
-        :video='video'
-        :imageWidth='320'
-      )
+      VideoSheet.ma-2(v-if='showGrid' :video='video' :imageWidth='imageWidth')
+      VideoPanel.ma-2(v-else :video='video' :imageWidth='imageWidth')
 
     //- flex padding
     template(v-if='padCount > 0')
@@ -15,9 +13,10 @@
 <script>
 import domCalculator from '@/lib/domCalculator'
 
-import VideoPanel from '@/components/videos/VideoSheet'
+import VideoSheet from '@/components/videos/VideoSheet'
+import VideoPanel from '@/components/videos/VideoPanel'
 export default {
-  components: { VideoPanel },
+  components: { VideoSheet, VideoPanel },
 
   props: {
     videos: {
@@ -44,7 +43,11 @@ export default {
 
   watch: {
     videos () {
-      // video が更新されたら layout を再計算
+      // layout を再計算
+      this.onResize()
+    },
+    showGrid () {
+      // layout を再計算
       this.onResize()
     }
   },
