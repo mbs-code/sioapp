@@ -1,3 +1,4 @@
+// TODO: @deprecated
 <template lang="pug">
   v-hover(v-slot:default='{ hover }')
     v-card(

@@ -1,3 +1,4 @@
+// TODO: @deprecated
 export default {
   props: {
     breakPoint: {
