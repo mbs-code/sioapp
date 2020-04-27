@@ -61,7 +61,7 @@
             v-list-item(v-on='on')
               v-list-item-icon
                 v-switch.ml-n2(v-model='mini' color='grey darken-2')
-              v-list-item-content.ml-n4.ellipsis 折りたたむ
+              v-list-item-content.ml-n4.text-truncate 折りたたむ
           span 展開する
 
     //- ■ main
@@ -116,11 +116,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>
