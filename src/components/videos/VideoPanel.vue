@@ -13,7 +13,7 @@
             v-card.fill-height(
               color='black'
               :elevation='imageHover ? 12 : 2'
-              :style="{ 'z-index-10': imageHover }"
+              :class="{ 'z-index-10': imageHover }"
               @click.stop
               :href='url'
               target='_blank'
@@ -53,13 +53,13 @@
               v-divider
 
             //- right fotter
-            v-col.flex-grow-0
+            v-col.flex-grow-0(v-if='video.channel')
               v-tooltip(top color='orange darken-4')
                 template(v-slot:activator='{ on: btnOn }')
                   v-hover(v-slot:default='{ hover: footerHover }')
                     v-card(
                       :elevation='footerHover ? 12 : 0'
-                      :style="{ 'z-index-10': footerHover }"
+                      :class="{ 'z-index-10': footerHover }"
                       @click.stop.prevent
                       :to="{ name: 'channels-id', params: { id: channel.id }}"
                       v-on='btnOn'

@@ -18,14 +18,28 @@
           v-btn(icon elevation='2')
             v-icon(small) mdi-view-grid
 
-    div
-      p 配信中
-      VideoList(:videos='livevideos' :showGrid='search.grid === 1' :imageWidth='200')
+    div.ma-2
+      div.headline
+        | 配信中
+        span.body-1.ml-2 (5分おきに更新)
+      v-row.fill-height(no-gutters)
+        v-col.flex-grow-0.my-1.mr-3
+          v-sheet.fill-height(width=8 color='red') 
+        v-col.flex-grow-1
+          VideoList(:videos='livevideos' :showGrid='search.grid === 1' :imageWidth='320')
 
-    div
-      p 直近
-      VideoList(:videos='upcomingVideos' :showGrid='search.grid === 1' :imageWidth='200')
-  
+    v-divider.my-4
+
+    div.ma-2
+      div.headline
+        | 直近の配信予定
+        span.body-1.ml-2 (5, 20, 35, 50分に更新)
+      v-row.fill-height(no-gutters)
+        v-col.flex-grow-0.my-1.mr-3
+          v-sheet.fill-height(width=8 color='orange') 
+        v-col.flex-grow-1
+          VideoList(:videos='upcomingVideos' :showGrid='search.grid === 1' :imageWidth='320')
+
     Loading(:show='showLoading')
 </template>
 

@@ -1,8 +1,8 @@
 <template lang="pug">
-  v-row(no-gutters align='stretch' justify='space-around' v-resize='onResize' ref='container')
+  v-row(no-gutters align='stretch' justify='space-between' v-resize='onResize' ref='container')
     template(v-for='(video, key) in videos' :keys='key')
       VideoSheet.ma-2(v-if='showGrid' :video='video' :imageWidth='imageWidth')
-      VideoPanel.ma-2(v-else :video='video' :imageWidth='imageWidth')
+      VideoPanel.col-12.my-2(v-else :video='video' :imageWidth='imageWidth')
 
     //- flex padding
     template(v-if='padCount > 0')
