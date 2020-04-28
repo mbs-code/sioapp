@@ -11,7 +11,7 @@ axios.defaults.baseURL = (process.env.NODE_ENV === 'production'
 axios.interceptors.request.use(request => {
   const isLogin = store.getters['auth/isLogin']
   if (isLogin) {
-    const token = store.state.auth.token
+    const token = store.getters['auth/getToken']
     request.headers.Authorization = `Bearer ${token}`
   }
 
