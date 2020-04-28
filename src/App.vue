@@ -31,7 +31,7 @@
         template(v-else)
           v-tooltip(bottom)
             template(v-slot:activator='{ on }')
-              v-btn(icon @click='doLogin' v-on='on')
+              v-btn(icon @click='pushLoginPage' v-on='on')
                 v-icon mdi-login
             span Login
 
@@ -116,3 +116,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  @import "@/assets/sass/index.scss";
+</style>

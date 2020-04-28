@@ -20,13 +20,14 @@
 <script>
 import apiHandler from '@/mixins/apiHandler'
 import formValid from '@/mixins/formValid'
+import authorize from '@/mixins/authorize'
 
 import Loading from '@/components/parts/Loading'
 
 export default {
   components: { Loading },
 
-  mixins: [apiHandler, formValid],
+  mixins: [apiHandler, formValid, authorize],
 
   data: function () {
     return {
@@ -54,13 +55,9 @@ export default {
           throw new Error('Validation error.')
         }
 
-        // login 
-        await this.$store.dispatch('login', {
-          username: this.username,
-          password: this.password,
-        })
-        this.$toast.success('ログインしました.')
-        
+        // login
+        await this.doLogin(this.username, this.password)
+
         // redirect
         const route = this.$route.query.redirect || { name: 'index' }
         await this.$router.replace(route).catch(() => {})
