@@ -16,13 +16,14 @@ module.exports = {
     }
   },
 
-  css: {
-    loaderOptions: {
-      scss: {
-        prependData: '@import "./src/assets/sass/index.scss";'
-      }
-    }
-  },
+  // 実行できない場合があるため, App.vue 内で処理
+  // css: {
+  //   loaderOptions: {
+  //     scss: {
+  //       prependData: '@import "./src/assets/sass/index.scss";'
+  //     }
+  //   }
+  // },
 
   transpileDependencies: [
     'vuetify'
