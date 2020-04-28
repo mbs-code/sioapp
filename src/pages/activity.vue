@@ -7,17 +7,21 @@
 
       v-spacer
 
-      //- v-col(cols='auto')
-      //-   v-pagination(v-model='search.page' :length='totalPages' total-visible='7' @input='onSearch')
-
       v-col(cols='auto')
         //- 色合いが微妙なので css で弄る (v-item--active)
-        v-btn-toggle.extend(v-model='search.grid' dense color='primary' @change='writeUrlQuery(search)')
-          v-btn(icon elevation='2')
-            v-icon(small) mdi-view-list
-          v-btn(icon elevation='2')
-            v-icon(small) mdi-view-grid
+        v-btn-toggle.extend(v-model='showGrid' dense mandatory color='primary')
+          v-tooltip(bottom)
+            template(v-slot:activator='{ on }')
+              v-btn(value='list' icon elevation='2' v-on='on')
+                v-icon(small) mdi-view-list
+            span リスト表示
+          v-tooltip(bottom)
+            template(v-slot:activator='{ on }')
+              v-btn(value='grid' icon elevation='2' v-on='on')
+                v-icon(small) mdi-view-grid
+            span グリッド表示
 
+    //- main
     div.ma-2
       div.headline
         | 配信中
@@ -26,7 +30,7 @@
         v-col.flex-grow-0.my-1.mr-3
           v-sheet.fill-height(width=8 color='red') 
         v-col.flex-grow-1
-          VideoList(:videos='livevideos' :showGrid='search.grid === 1' :imageWidth='320')
+          VideoList(:videos='livevideos' :showGrid="showGrid === 'grid'" :imageWidth='320')
 
     v-divider.my-4
 
@@ -38,7 +42,7 @@
         v-col.flex-grow-0.my-1.mr-3
           v-sheet.fill-height(width=8 color='orange') 
         v-col.flex-grow-1
-          VideoList(:videos='upcomingVideos' :showGrid='search.grid === 1' :imageWidth='320')
+          VideoList(:videos='upcomingVideos' :showGrid="showGrid === 'grid'" :imageWidth='320')
 
     Loading(:show='showLoading')
 </template>
@@ -47,7 +51,7 @@
 import * as dateFns from 'date-fns'
 import stringFilters from '@/mixins/stringFilters'
 import apiHandler from '@/mixins/apiHandler'
-import htmlHistory from '@/mixins/htmlHistory'
+// import htmlHistory from '@/mixins/htmlHistory'
 
 import VideoList from '@/components/videos/VideoList'
 import Loading from '@/components/parts/Loading'
@@ -55,18 +59,22 @@ import Loading from '@/components/parts/Loading'
 export default {
   components: { Loading, VideoList },
   
-  mixins: [stringFilters, apiHandler, htmlHistory],
+  mixins: [stringFilters, apiHandler],
   
   data: function () {
     return {
-      search: {
-        grid: 0 // 0:list, 1:grid
-      },
+      // search: {
+      //   grid: 0 // 0:list, 1:grid
+      // },
       livevideos: [],
-      upcomingVideos: [],
-      requestTime: 0, // 実処理時間
-      fetchDate: {}, // 取得した日時
-      showLoading: true // loading flag
+      upcomingVideos: []
+    }
+  },
+
+  computed: {
+    showGrid: {
+      get () { return this.$store.state.config.listMode },
+      set (value) { this.$store.commit('config/setListMode', value) }
     }
   },
 

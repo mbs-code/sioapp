@@ -117,14 +117,3 @@ export default {
   }
 }
 </script>
-
-<style scope lang='scss'>
-// btn group の色を btn と同等にする修正
-// color で濃いめを指定すること
-.v-btn-toggle.extend .v-btn.v-item--active:before {
-  opacity: 1 !important;
-}
-.v-btn-toggle.extend .v-btn.v-item--active i {
-  color: white !important;
-}
-</style>
