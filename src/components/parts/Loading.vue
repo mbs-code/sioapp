@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-overlay(:value='show')
+  v-overlay(:value='show' :absolute='absolute')
     div.text-center
       v-progress-circular(
         indeterminate
@@ -16,6 +16,10 @@ export default {
     show: {
       type: Boolean,
       default: false
+    },
+    absolute: {
+      type: Boolean,
+      default: true
     }
   }
 }
