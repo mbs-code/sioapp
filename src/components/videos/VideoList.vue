@@ -49,6 +49,10 @@ export default {
     showGrid () {
       // layout を再計算
       this.onResize()
+    },
+    imageWidth () {
+      // layout を再計算
+      this.onResize()
     }
   },
 

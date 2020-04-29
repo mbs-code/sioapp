@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import linkable from '@/mixins/linkable'
+import linkable from '@/mixins/linkable' // TODO: remove
 
 export default {
   mixins: [linkable],
