@@ -11,7 +11,8 @@ import config from './config'
 Vue.use(Vuex)
 
 
-const ls = new SecureLS({ encordingType: 'AES', isCompression: false })
+const ls = new SecureLS({ encodingType: 'AES', isCompression: true })
+// const ls = new SecureLS({ encodingType: '', isCompression: false }) // debug
 
 export default new Vuex.Store({
   modules: { auth, config },
