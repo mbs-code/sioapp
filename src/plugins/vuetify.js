@@ -32,7 +32,7 @@ Vue.use(VuetifyToast, {
     },
     success: {
       // 5秒で消える
-      icon: 'mdi-information',
+      icon: 'mdi-check-circle',
       textColor: 'white',
       iconColor: 'green',
       timeout: 5000,
