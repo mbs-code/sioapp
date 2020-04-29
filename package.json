@@ -20,6 +20,7 @@
     "pug-plain-loader": "^1.0.0",
     "query-string": "^6.11.0",
     "round-to": "^4.1.0",
+    "secure-ls": "^1.2.6",
     "validator": "^13.0.0",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.5.2",
