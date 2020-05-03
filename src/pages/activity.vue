@@ -3,40 +3,26 @@
     //- header
     v-row.mx-2(no-gutters align='center' justify='center')
       v-col(cols='auto')
-        span.body-2.grey--text.text--darken-1 {{ fetchDate | formatDatetime }}取得 - {{ requestTime / 1000 | formatNumber(2) }}秒
+        span.body-2.grey--text.text--darken-1
+          | {{ fetchDate | formatDatetime }}取得 - {{ requestTime / 1000 | formatNumber(2) }}秒
 
       v-spacer
 
       v-col(cols='6')
-        v-slider(v-model='imageWidth' min=220 :max='screenWidth()' prepend-icon='mdi-arrow-expand-all' hideDetails)
+        p-size-slider(v-model='imageWidth')
 
       v-col(cols='auto')
-        v-tooltip(bottom)
-          template(v-slot:activator='{ on }')
-            v-btn.white(elevation='2' v-on='on' @click='getDataFromApi')
-              v-icon(small) mdi-autorenew
-          span 更新
+        p-tooltip-button(label='更新' icon='mdi-autorenew' @click='getDataFromApi')
 
       v-col(cols='auto')
-        //- 色合いが微妙なので css で弄る (v-item--active)
-        v-btn-toggle.extend(v-model='showGrid' dense mandatory color='primary')
-          v-tooltip(bottom)
-            template(v-slot:activator='{ on }')
-              v-btn(value='list' icon elevation='2' v-on='on')
-                v-icon(small) mdi-view-list
-            span リスト表示
-          v-tooltip(bottom)
-            template(v-slot:activator='{ on }')
-              v-btn(value='grid' icon elevation='2' v-on='on')
-                v-icon(small) mdi-view-grid
-            span グリッド表示
+        p-toggle-list-mode-button(v-model='showGrid')
 
     //- main
     div.ma-2
       div.headline
         | 配信中
         span.body-1.ml-2 (5分おきに更新)
-      v-row.fill-height(no-gutters)
+      v-row.fill-height.flex-nowrap(no-gutters)
         v-col.flex-grow-0.my-1.mr-3
           v-sheet.fill-height(width=8 color='red') 
         v-col.flex-grow-1
@@ -48,7 +34,7 @@
       div.headline
         | 直近の配信予定
         span.body-1.ml-2 (5, 20, 35, 50分に更新)
-      v-row.fill-height(no-gutters)
+      v-row.fill-height.flex-nowrap(no-gutters)
         v-col.flex-grow-0.my-1.mr-3
           v-sheet.fill-height(width=8 color='orange') 
         v-col.flex-grow-1
@@ -64,9 +50,12 @@ import apiHandler from '@/mixins/apiHandler'
 
 import VideoList from '@/components/videos/VideoList'
 import Loading from '@/components/parts/Loading'
+import PTooltipButton from '@/components/parts/PTooltipButton'
+import PSizeSlider from '@/components/parts/PSizeSlider'
+import PToggleListModeButton from '@/components/parts/PToggleListModeButton'
 
 export default {
-  components: { Loading, VideoList },
+  components: { Loading, VideoList, PTooltipButton, PSizeSlider, PToggleListModeButton },
   
   mixins: [stringFilters, apiHandler],
   
@@ -76,7 +65,7 @@ export default {
       upcomingVideos: []
     }
   },
-
+  
   computed: {
     showGrid: {
       get () { return this.$store.getters['config/getListMode'] },
@@ -94,10 +83,6 @@ export default {
   },
 
   methods: {
-    screenWidth () {
-      return window.parent.screen.width
-    },
-
     async getDataFromApi () {
       this.apiHandler(async () => {
         const { data: { items: liveVideos }} = await this.$http.get(`videos`, {
