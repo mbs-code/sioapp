@@ -6,6 +6,7 @@
       hideDetails
       v-bind='$attrs'
       v-on='$listeners'
+      :inputValue='value'
       @change="$emit('input', $event)"
     )
 
@@ -35,12 +36,30 @@ export default {
   },
 
   watch: {
-    value (val) {
+    value () {
+      this.checkTimer()
+    }
+  },
+
+  mounted () {
+    // タイマーの初期化
+    this.checkTimer()
+  },
+
+  beforeDestroy () {
+    // タイマーを削除
+    clearInterval(this.timerObj)
+  },
+
+  methods: {
+    checkTimer () {
+      const val = this.value
       if (val) {
-        // true なら 新規タイマーを作成
+        // true なら 新規タイマーを作成（念のため削除しておく）
         const seconds = Number(this.seconds) * 1000
         console.log(`auto update: ${seconds} sec.`)
 
+        clearInterval(this.timerObj)
         this.timerObj = setInterval(() => { this.onFinish() }, seconds)
         this.timerOn = true
       } else {
@@ -51,12 +70,11 @@ export default {
         this.timerObj = null
         this.timerOn = false
       }
-    }
-  },
+    },
 
-  methods: {
     // タイマー終了時の処理
     onFinish () {
+      console.log('> on Finish!')
       this.$emit('timer')
     }
   }
