@@ -9,13 +9,19 @@
       v-spacer
 
       v-col(cols='6')
-        p-size-slider(v-model='imageWidth')
+        v-tooltip(bottom label='サイズ変更')
+          p-size-slider(v-model='imageWidth' prependIcon='mdi-arrow-expand-all')
+      v-col(cols='auto')
+        v-tooltip(bottom label='自動更新：3分')
+          p-event-switch(v-model='autoFetch' seconds='180' prependIcon='mdi-autorenew' color='primary' @timer='getDataFromApi')
 
       v-col(cols='auto')
-        p-tooltip-button(label='更新' icon='mdi-autorenew' @click='getDataFromApi')
+        v-tooltip(bottom label='更新')
+          v-btn(@click='getDataFromApi')
+            v-icon mdi-autorenew
 
       v-col(cols='auto')
-        p-toggle-list-mode-button(v-model='showGrid')
+        p-toggle-listmode-btn(v-model='showGrid')
 
     //- main
     div.ma-2
@@ -50,12 +56,13 @@ import apiHandler from '@/mixins/apiHandler'
 
 import VideoList from '@/components/videos/VideoList'
 import Loading from '@/components/parts/Loading'
-import PTooltipButton from '@/components/parts/PTooltipButton'
+import PEventSwitch from '@/components/parts/PEventSwitch'
 import PSizeSlider from '@/components/parts/PSizeSlider'
-import PToggleListModeButton from '@/components/parts/PToggleListModeButton'
+import PToggleListmodeBtn from '@/components/parts/PToggleListmodeBtn'
+import VTooltip from '@/components/parts/VTooltip'
 
 export default {
-  components: { Loading, VideoList, PTooltipButton, PSizeSlider, PToggleListModeButton },
+  components: { Loading, VideoList, PEventSwitch, PSizeSlider, PToggleListmodeBtn, VTooltip },
   
   mixins: [stringFilters, apiHandler],
   
@@ -71,7 +78,10 @@ export default {
       get () { return this.$store.getters['config/getListMode'] },
       set (value) { this.$store.commit('config/setListMode', value) }
     },
-  
+    autoFetch: {
+      get () { return this.$store.getters['config/getAutoFetch'] },
+      set (value) { this.$store.commit('config/setAutoFetch', value) }
+    },
     imageWidth: {
       get () { return this.$store.getters['config/getImageWidth'] },
       set (value) { this.$store.commit('config/setImageWidth', value) }

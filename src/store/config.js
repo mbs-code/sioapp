@@ -4,6 +4,7 @@ export default {
 
   state: {
     listMode: 'list', // list, grid
+    autoFetch: false,
     listImageWidth: 320,
     gridImageWidth: 320,
   },
@@ -11,6 +12,10 @@ export default {
   mutations: { 
     setListMode (state, value) {
       state.listMode = value
+    },
+    
+    setAutoFetch (state, value) {
+      state.autoFetch = value
     },
 
     setImageWidth (state, value) {
@@ -28,6 +33,10 @@ export default {
   getters: {
     getListMode (state) {
       return state.listMode
+    },
+
+    getAutoFetch (state) {
+      return state.autoFetch
     },
 
     getImageWidth (state) {

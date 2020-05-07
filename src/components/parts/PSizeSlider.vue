@@ -1,18 +1,13 @@
 <template lang="pug">
   //- @required v-model
-  v-tooltip(bottom)
-    template(v-slot:activator='{ on }')
-      div(v-on='on')
-        v-slider(
-          v-bind='$attrs'
-          v-on='$listeners'
-          :min='min'
-          :max='max'
-          prepend-icon='mdi-arrow-expand-all'
-          hideDetails
-          v-resize='onResize'
-        )
-    span サイズ変更
+  v-slider(
+    v-bind='$attrs'
+    v-on='$listeners'
+    :min='min'
+    :max='max'
+    hideDetails
+    v-resize='onResize'
+  )
 
 </template>
 
