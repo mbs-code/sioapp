@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createLogger from 'vuex/dist/logger'
 
 import SecureLS from "secure-ls"
 import createPersistedState from 'vuex-persistedstate'
@@ -10,9 +11,9 @@ import config from './config'
 
 Vue.use(Vuex)
 
-
-const ls = new SecureLS({ encodingType: 'AES', isCompression: true })
-// const ls = new SecureLS({ encodingType: '', isCompression: false }) // debug
+// !! aes 周りにバグ？ 正しくシリアライズできない
+// const ls = new SecureLS({ encodingType: 'aes', isCompression: true })
+const ls = new SecureLS({ encodingType: '', isCompression: false }) // debug
 
 export default new Vuex.Store({
   modules: { auth, config },
@@ -27,6 +28,7 @@ export default new Vuex.Store({
   },
 
   plugins: [
+    createLogger(),
     VuexReset({ trigger: 'clear'}),
     createPersistedState({
       storage: {
