@@ -3,13 +3,13 @@
     //- search panel
     v-row.mx-2(no-gutters align='center' justify='center')
       v-col.mx-2(cols='auto')
-        v-text-field(label='search' v-model='search.text' @change='onSearch')
+        v-text-field(label='search' v-model='queries.text' @change='onSearch')
 
       v-col.mx-2(cols='auto')
-        v-checkbox(v-model='search.fulltext' label='全文検索' @change='writeUrlQuery(search)')
+        v-checkbox(v-model='queries.fulltext' label='全文検索' @change='writeUrlQuery(search)')
 
       v-col.mx-2(cols='auto')
-        v-btn-toggle(v-model='search.type' color='primary' dense multiple @change='onSearch')
+        v-btn-toggle(v-model='queries.type' color='primary' dense multiple @change='onSearch')
           v-btn(value='upcoming' elevation='2') 予約
           v-btn(value='live' elevation='2') 配信中
           v-btn(value='archive' elevation='2') アーカイブ
@@ -17,7 +17,7 @@
           v-btn(value='premiere' elevation='2') プレミア動画
       
       v-col.mx-2(cols='auto')
-        v-btn-toggle(v-model='search.status' color='primary' dense multiple @change='onSearch')
+        v-btn-toggle(v-model='queries.status' color='primary' dense multiple @change='onSearch')
           v-btn(value='public' elevation='2') 公開
           v-btn(value='unlisted' elevation='2') 限定公開
           v-btn(value='private' elevation='2') 非公開
@@ -33,23 +33,18 @@
       v-spacer
 
       v-col(cols='auto')
-        v-pagination(v-model='search.page' :length='totalPages' total-visible='7' @input='onSearch')
+        v-pagination(v-model='queries.page' :length='totalPages' total-visible='7' @input='onSearch')
 
       v-col(cols='auto')
-        //- 色合いが微妙なので css で弄る (v-item--active)
-        v-btn-toggle.extend(v-model='search.grid' dense color='primary' @change='writeUrlQuery(search)')
-          v-btn(icon elevation='2')
-            v-icon(small) mdi-view-list
-          v-btn(icon elevation='2')
-            v-icon(small) mdi-view-grid
+        p-toggle-listmode-btn(v-model='showGrid')
 
     //- main
-    VideoList(:videos='videos' :showGrid='search.grid === 1' :imageWidth='320')
+    VideoList(:videos='videos' :showGrid="showGrid === 'grid'" :imageWidth='imageWidth')
 
     //- footer
     v-row.mx-2(no-gutters align='center' justify='center')
       v-col(cols='auto')
-        v-pagination(v-model='search.page' :length='totalPages' total-visible='7' @input='onSearch')
+        v-pagination(v-model='queries.page' :length='totalPages' total-visible='7' @input='onSearch')
 
     Loading(:show='showLoading')
 </template>
@@ -62,20 +57,21 @@ import htmlHistory from '@/mixins/htmlHistory'
 import VideoList from '@/components/videos/VideoList'
 import Loading from '@/components/parts/Loading'
 
+import PToggleListmodeBtn from '@/components/parts/PToggleListmodeBtn'
+
 export default {
-  components: { Loading, VideoList },
+  components: { Loading, VideoList, PToggleListmodeBtn },
 
   mixins: [stringFilters, apiHandler, htmlHistory],
 
   data: function() {
     return {
-      search: {
+      queries: {
         page: 1,
         type: [],
         status: [],
         text: '',
-        fulltext: false,
-        grid: 0 // 0:list, 1:grid
+        fulltext: false
       },
       videos: [],
       totalPages: 0, // 全ページ数
@@ -83,55 +79,53 @@ export default {
     }
   },
 
-  async beforeRouteUpdate (to, from, next) {
-    await this.initPage()
-    next()
-  },
-
-  created: async function() {
-    await this.initPage()
+  computed: {
+    showGrid: {
+      get () { return this.$store.getters['config/getListMode'] },
+      set (value) { this.$store.commit('config/setListMode', value) }
+    },
+    imageWidth: {
+      get () { return this.$store.getters['config/getImageWidth'] },
+      set (value) { this.$store.commit('config/setImageWidth', value) }
+    }
   },
 
   methods: {
     // ページの初期化
-    async initPage () {
-      this.loadUrlQuery((params) => {
-        this.search.page = Number(params.page) || 1
-        this.search.text = params.text || undefined
-        this.search.type = this.normalizeArray(params.type)
-        this.search.status = this.normalizeArray(params.status)
-        this.search.fulltext = Boolean(params.fulltext)
-        this.search.grid = Number(params.grid) || 0
-      })
+    async init () {
+      this.loadUrlQuery()
       await this.getDataFromApi()
-      this.writeUrlQuery(this.search)
+      // アクセス時に url の正規化を行いたい場合, コメントアウト
+      // this.writeUrlQuery(true)
     },
 
     // 検索実行
-    onSearch() {
-      this.getDataFromApi()
-      this.writeUrlQuery(this.search)
+    async onSearch() {
+      await this.getDataFromApi()
+      this.writeUrlQuery()
     },
 
     // API を叩いてデータを取ってくる
     async getDataFromApi() {
       this.apiHandler(async () => {
+        const q = this.queries
         const { data: { items, page, totalPages, totalLength } } = await this.$http.get('videos', {
           params: {
-            text: this.search.text,
-            type: this.search.type,
-            status: this.search.status,
-            page: this.search.page,
-            fulltext: this.search.fulltext,
+            text: q.text,
+            type: q.type,
+            status: q.status,
+            page: q.page,
+            fulltext: q.fulltext,
             sort: 'startTime',
             order: 'desc'
           }
         })
 
         this.videos = items
-        this.search.page = Number(page)
         this.totalPages = totalPages
         this.totalLength = totalLength
+
+        this.$set(this.queries, 'page', Number(page))
       })
     }
   }
