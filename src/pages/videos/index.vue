@@ -91,7 +91,6 @@ export default {
   },
 
   methods: {
-    // ページの初期化
     async init () {
       this.loadUrlQuery()
       await this.getDataFromApi()
