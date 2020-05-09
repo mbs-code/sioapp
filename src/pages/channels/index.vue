@@ -6,7 +6,7 @@
         v-text-field(label='search' v-model='queries.text' @change='onSearch')
 
       v-col.mx-2(cols='auto')
-        v-checkbox(v-model='queries.fulltext' label='全文検索' @change='writeUrlQuery(search)')
+        v-checkbox(v-model='queries.fulltext' label='全文検索' @change='onSearch')
 
       v-col.mx-2(cols='auto')
         v-btn(@click='onSearch') q
