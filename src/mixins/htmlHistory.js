@@ -18,9 +18,9 @@ export default {
     const eventHandler = async () => {
       await this.init()
     }
-    document.addEventListener('onpopstate', eventHandler)
+    window.addEventListener('popstate', eventHandler)
     this.$once('hook:beforeDestroy', () => {
-      document.removeEventListener('onpopstate', eventHandler)
+      window.removeEventListener('popstate', eventHandler)
     })
 
     await this.init()
