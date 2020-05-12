@@ -17,23 +17,49 @@
                 :disabled='!overlayHover'
               )
                 v-row.flex-column.fill-height(no-gutters)
-                  //- - chip (show indicator)
-                  v-col.flex-grow-0.ma-2
-                    template(v-for='(chip, key) in chips' :keys='key')
-                      template(v-if='overlayHover')
-                        v-chip.mr-3(label small :color='chip.color' :text-color='chip.textColor') {{ chip.text }}
-                      template(v-else)
-                        v-avatar.mr-2(color='blue-grey darken-2' size='28')
-                          v-avatar(:color='chip.color' size='24')
-                            v-icon(small) {{ chip.icon }}
+                  //- - header chip
+                  v-col.flex-grow-0.pa-2
+                    //- - - header chip for overlay
+                    template(v-if='overlayHover')
+                      v-row(no-gutters)
+                        v-col.flex-grow-1
+                          template(v-for='(chip, key) in chips' :keys='key')
+                            v-chip.mr-3(label small :color='chip.color' :text-color='chip.textColor') {{ chip.text }}
+                        v-col.flex-grow-0
+                          template(v-if='video.type === "live"')
+                            v-chip(label small color='red darken-3')
+                              v-icon.mr-1(small style='padding-bottom: 2px;') mdi-account-group
+                              | {{ video.concurrentViewers | formatNumber }}
+                          template(v-if='video.type === "upcoming"')
+                            v-chip(label small color='orange darken-3')
+                              v-icon.mr-1(small style='padding-bottom: 2px;') mdi-alarm
+                              | {{ video.scheduledStartTime | formatDatetime('dd日 HH:mm') }} ~
 
-                  //- - title (hide)
+                    //- - - header chip for default
+                    template(v-else)
+                      v-row(no-gutters)
+                        v-col.flex-grow-1
+                          template(v-for='(chip, key) in chips' :keys='key')
+                            v-avatar.mr-2(color='blue-grey darken-2' size='28')
+                              v-avatar(:color='chip.color' size='24')
+                                v-icon(small) {{ chip.icon }}
+                        v-col.flex-grow-0
+                          template(v-if='video.type === "live"')
+                            v-chip.number-chip.px-2(label small color='red darken-3')
+                              v-icon.mr-1(small style='padding-bottom: 2px;') mdi-account-group
+                              | {{ video.concurrentViewers | formatNumber }}
+                          template(v-if='video.type === "upcoming"')
+                            v-chip.number-chip.px-2(label small color='orange darken-3')
+                              v-icon.mr-1(small style='padding-bottom: 2px;') mdi-alarm
+                              | {{ video.scheduledStartTime | formatDatetime('dd日 HH:mm') }} ~
+
+                  //- - main title (default hide)
                   v-col.flex-grow-1.min-height-0
                     template(v-if='overlayHover')
                       v-row.ma-2.fill-height.overflow-y-auto.thin-scrollbar(no-gutters align='start' justify='center')
                         | {{ video.title }}
 
-                  //- - buttons
+                  //- - footer buttons
                   v-col.flex-grow-0
                     v-row.flex-nowrap.ma-2(no-gutters)
                       //- - - channel button (always show)
@@ -52,11 +78,11 @@
                           span チャンネル情報
 
                       template(v-if='overlayHover')
-                        //- - - channel (hide)
+                        //- - - channel (default hide)
                         v-col.flex-grow-1.min-width-0
                           v-row.fill-height.pa-2(no-gutters align='center' justify='start')
                             div.text-truncate {{ video.channel.title }}
-                        //- - - detail button (hide)
+                        //- - - detail button (default hide)
                         v-col.flex-grow-0
                           v-tooltip(top color='indigo darken-1')
                             template(v-slot:activator='{ on: btnOn }')
@@ -167,3 +193,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.number-chip.v-chip.theme--dark {
+  border-width: 2px;
+  border: solid;
+  border-color: #455a64 !important; // blue darken-2
+}
+</style>
