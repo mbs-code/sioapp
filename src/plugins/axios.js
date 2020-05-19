@@ -4,12 +4,14 @@ import VueAxios from 'vue-axios'
 
 import store from '@/store'
  
-axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT || '/api/'
+axios.defaults.baseURL = (process.env.NODE_ENV === 'production'
+  ? process.env.VUE_APP_API_ENDPOINT
+  : '/api/') || '/api/'
 
 axios.interceptors.request.use(request => {
-  const isLogin = store.getters.isLogin
+  const isLogin = store.getters['auth/isLogin']
   if (isLogin) {
-    const token = store.state.token
+    const token = store.getters['auth/getToken']
     request.headers.Authorization = `Bearer ${token}`
   }
 

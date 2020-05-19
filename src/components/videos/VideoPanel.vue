@@ -1,40 +1,46 @@
 <template lang="pug">
   v-hover(v-slot:default='{ hover }' v-resize='onResize')
     v-card(
-      :elevation='hasLink && hover ? 12 : 2'
-      v-bind='linkObject'
-      v-resize='onResize'
+      :elevation='hover ? 12 : 2'
+      :to="{ name: 'videos-id', params: { id: video.id }}"
       ref='card'
     )
+
       v-row.fill-height(no-gutters :class="{ 'flex-column': isCollapse }")
         //- left header
         v-col.flex-grow-0
-          LinkedCard.fill-height.foreground(:href='url' target='_blank')
-            v-row.fill-height.black(no-gutters align='center' justify='center'
-             :class="{ 'flex-column': isCollapse, 'bottom-flat': isCollapse, 'right-flat': !isCollapse }"
+          v-hover(v-slot:default='{ hover: imageHover }')
+            v-card.fill-height(
+              color='black'
+              :elevation='imageHover ? 12 : 2'
+              :class="{ 'z-index-10': imageHover }"
+              @click.stop
+              :href='url'
+              target='_blank'
             )
-              v-img(:src='video.thumbnailHires' :aspect-ratio='imageAspectRecio' :width='imageWidth')
+              v-row.fill-height(no-gutters align='center' justify='center'
+                :class="{ 'flex-column': isCollapse }"
+              )
+                v-img(:src='video.thumbnailHires' :aspect-ratio='imageAspectRecio' :width='imageWidth')
 
         //- right content
         v-col.flex-grow-1
-          v-row.fill-height.flex-column(no-gutters)
+          v-row.flex-column.fill-height(no-gutters)
 
             //- right main
             v-col.pa-2.flex-grow-1
-              v-row.fill-height.flex-column(no-gutters)
-                //- chips
+              v-row.flex-column.fill-height(no-gutters)
+                //- - chips
                 v-col.pb-1.flex-grow-0
                   template(v-for='(chip, key) in chips' :keys='key')
                     v-chip.mr-3(label small :color='chip.color' :text-color='chip.textColor') {{ chip.text }}
-
-                //- title
+                //- - title
                 v-col.flex-grow-1
                   span.title.text--primary {{ video.title }}
-
+                //- - divider
                 v-col.py-1.flex-grow-0(v-if='isCollapse')
                   v-divider
-
-                //- labels
+                //- - labels
                 v-col.flex-grow-0
                   v-row(no-gutters)
                     template(v-for='(label, key) in labels' :keys='key')
@@ -47,30 +53,36 @@
               v-divider
 
             //- right fotter
-            v-col.flex-grow-0
-              Media.top-flat(
-                :image='channel.thumbnail'
-                :text='channel.title'
-                :to="{ name: 'channels-id', params: { id: channel.id }}"
-              )
+            v-col.flex-grow-0(v-if='video.channel')
+              v-tooltip(top color='orange darken-4')
+                template(v-slot:activator='{ on: btnOn }')
+                  v-hover(v-slot:default='{ hover: footerHover }')
+                    v-card(
+                      :elevation='footerHover ? 12 : 0'
+                      :class="{ 'z-index-10': footerHover }"
+                      @click.stop.prevent
+                      :to="{ name: 'channels-id', params: { id: channel.id }}"
+                      v-on='btnOn'
+                    )
+                      v-row.fill-height(no-gutters)
+                        v-col.flex-grow-0.ma-2
+                          v-avatar(size=40 :color="footerHover ? 'orange darken-4' : 'blue-grey darken-2'")
+                            v-avatar(size=36)
+                              img(:src='video.channel.thumbnail')
+                        v-col.flex-grow-1.ml-2
+                          v-row.fill-height(no-gutters align='center' justify='start')
+                            | {{ video.channel.title }}
+                span チャンネル情報
 
 </template>
 
 <script>
-import linkable from '@/mixins/linkable'
 import responsible from '@/mixins/responsible'
 import stringFilters from '@/mixins/stringFilters'
 
-import Media from '@/components/parts/Media'
-import LinkedCard from '@/components/parts/LinkedCard'
-
 export default {
-  components: {
-    Media,
-    LinkedCard
-  },
 
-  mixins: [linkable, responsible, stringFilters],
+  mixins: [responsible, stringFilters],
 
   props: {
     video: {
@@ -84,13 +96,6 @@ export default {
     imageAspectRecio: {
       type: Number,
       default: () => 16 / 9
-    }
-  },
-
-  data() {
-    return {
-      width: 0
-      // height: 0
     }
   },
 
@@ -135,10 +140,6 @@ export default {
       }
       return ary
     }
-  },
-
-  async mounted() {
-    await this.onResize()
   },
 
   methods: {

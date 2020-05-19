@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-overlay(:value='show')
+  v-overlay.area-margin(:value='show')
     div.text-center
       v-progress-circular(
         indeterminate
@@ -16,7 +16,18 @@ export default {
     show: {
       type: Boolean,
       default: false
+    },
+    absolute: {
+      type: Boolean,
+      default: true
     }
   }
 }
 </script>
+
+<style lang="scss">
+.area-margin {
+  margin-left: 56px;
+  margin-top: 48px;
+}
+</style>

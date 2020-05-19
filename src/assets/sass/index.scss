@@ -1,0 +1,50 @@
+.min-width-0 {
+  min-width: 0px;
+}
+.min-height-0 {
+  min-height: 0px;
+}
+
+.z-index-10 {
+  z-index: 10 !important;
+}
+
+.overflow-y-auto {
+  overflow-y: auto !important;
+}
+
+.v-overlay-filled .v-overlay__content {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.white--background {
+  background: white !important;
+}
+
+// とりあえず card 限定で作成
+.v-disabled-opacity-1.v-card--disabled {
+  > *:not(.v-card__progress) {
+    opacity: 1 !important;
+  }
+}
+
+/// ////////////////////////////////////////////////////////////
+
+// scroll bar 拡張
+// ref: https://cloudpack.media/32418
+// スクロールバー全体
+.thin-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+// スクロールバーの軌道
+.thin-scrollbar::-webkit-scrollbar-track {
+  border-radius: 4px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+}
+// スクロールバーの動く部分
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 50, .5);
+  border-radius: 10px;
+  box-shadow:0 0 0 1px rgba(255, 255, 255, .3);
+}

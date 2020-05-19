@@ -37,7 +37,7 @@ router.beforeEach((to, from, next) => {
   // ページにログインマークがあったら
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // ログイン中か確認
-    const isLogin = store.getters.isLogin
+    const isLogin = store.getters['auth/isLogin']
     console.log('Requires auth page.', `login: ${isLogin}`)
 
     if (!isLogin) {

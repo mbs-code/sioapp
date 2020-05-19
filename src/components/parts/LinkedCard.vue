@@ -1,3 +1,4 @@
+// TODO: @deprecated
 <template lang="pug">
   v-hover(v-slot:default='{ hover }')
     v-card(
@@ -12,7 +13,7 @@
 </template>
 
 <script>
-import linkable from '@/mixins/linkable'
+import linkable from '@/mixins/linkable' // TODO: remove
 
 export default {
   mixins: [linkable],

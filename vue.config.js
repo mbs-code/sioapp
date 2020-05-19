@@ -6,13 +6,24 @@ module.exports = {
 
   devServer: {
     proxy: {
-      '/api': {
+      '/api/': {
         target: process.env.VUE_APP_API_ENDPOINT,
+        changeOrigin: true,
         ws: false,
-        changeOrigin: true
+        pathRewrite: { '^/api': '/' },
+        logLevel: 'debug'
       }
     }
   },
+
+  // 実行できない場合があるため, App.vue 内で処理
+  // css: {
+  //   loaderOptions: {
+  //     scss: {
+  //       prependData: '@import "./src/assets/sass/index.scss";'
+  //     }
+  //   }
+  // },
 
   transpileDependencies: [
     'vuetify'

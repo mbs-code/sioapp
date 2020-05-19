@@ -31,7 +31,7 @@
         template(v-else)
           v-tooltip(bottom)
             template(v-slot:activator='{ on }')
-              v-btn(icon @click='doLogin' v-on='on')
+              v-btn(icon @click='pushLoginPage' v-on='on')
                 v-icon mdi-login
             span Login
 
@@ -61,7 +61,7 @@
             v-list-item(v-on='on')
               v-list-item-icon
                 v-switch.ml-n2(v-model='mini' color='grey darken-2')
-              v-list-item-content.ml-n4.ellipsis 折りたたむ
+              v-list-item-content.ml-n4.text-truncate 折りたたむ
           span 展開する
 
     //- ■ main
@@ -88,7 +88,7 @@ export default {
       isLocal: isLocal, // localhost 接続なら true
       items: [
         { title: 'ホーム', icon: 'mdi-home', to: { name: 'index' }, exact: true },
-        { title: 'アクティビティ', icon: 'mdi-calendar-check', to: { name: 'activity' }, exact: true },
+        { title: 'アクティビティ', icon: 'mdi-bell-ring-outline', to: { name: 'activity' }, exact: true },
         { title: 'チャンネル', icon: 'mdi-youtube', to: { name: 'channels' } },
         { title: '動画', icon: 'mdi-video', to: { name: 'videos' } },
         { title: '管理', icon: 'mdi-cog', to: { name: 'admin' } },
@@ -118,9 +118,5 @@ export default {
 </script>
 
 <style lang="scss">
-.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  @import "@/assets/sass/index.scss";
 </style>

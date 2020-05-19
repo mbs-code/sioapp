@@ -1,75 +1,41 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from '@/plugins/axios'
+import createLogger from 'vuex/dist/logger'
 
+import SecureLS from "secure-ls"
 import createPersistedState from 'vuex-persistedstate'
+import VuexReset from '@ianwalter/vuex-reset'
+
+import auth from './auth'
+import config from './config'
 
 Vue.use(Vuex)
 
+// !! aes 周りにバグ？ 正しくシリアライズできない
+// const ls = new SecureLS({ encodingType: 'aes', isCompression: true })
+const ls = new SecureLS({ encodingType: '', isCompression: false }) // debug
+
 export default new Vuex.Store({
-  state: {
-    doLogin: false,
-    token: null,
-    issuedAt: null, // 発行日時
-    expiresIn: null, // 有効期限
-    user : null
-  },
+  modules: { auth, config },
 
   mutations: {
-    attach (state, { user, token, issuedAt, expiresIn }) {
-      if (!token) {
-        throw new Error('Missing token!')
-      }
-      
-      if (!user) {
-        throw new Error('No user information!')
-      }
+    clear: () => { 
+      console.log('vuex >', 'clear')
+      localStorage.clear()
 
-      state.doLogin = true
-      state.user = user
-      state.token = token
-      state.issuedAt = new Date(issuedAt * 1000)
-      state.expiresIn = new Date(expiresIn * 1000)
-    },
-    detach (state) {
-      state.doLogin = false
-      state.user = null
-      state.token = null
-      state.issuedAt = null
-      state.expiresIn = null
+      // trigger by VuexReset
     }
   },
 
-  actions: {
-    async login ({ commit }, { username, password }) {
-      console.log('vuex >', 'login')
-      const { data: { user, token, issuedAt, expiresIn } } = await axios.post('login', {
-        username: username,
-        password: password
-      })
-
-      commit('attach', { user, token, issuedAt, expiresIn })
-      console.log('- token expires in:', new Date(expiresIn * 1000).toLocaleString())
-    },
-    logout ({ commit }) {
-      console.log('vuex >', 'logout')
-      commit('detach')
-    }
-  },
-
-  getters: {
-    isLogin (state) {
-      const doLogin = state.doLogin
-      const expiresIn = state.expiresIn
-      if (doLogin && expiresIn) {
-        // token の有効期限を確認する
-        const now = new Date()
-        const exp = new Date(expiresIn)
-        return exp.getTime() > now.getTime() // exp のほうが大きいなら true
+  plugins: [
+    createLogger(),
+    VuexReset({ trigger: 'clear'}),
+    createPersistedState({
+      storage: {
+        getItem: key => ls.get(key),
+        setItem: (key, value) => ls.set(key, value),
+        removeItem: key => ls.remove(key)
       }
-      return false
-    }
-  },
-
-  plugins: [createPersistedState()] // localstorage 永続化
+    })
+  ]
 })
