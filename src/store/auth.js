@@ -39,18 +39,18 @@ export default {
 
   actions: {
     async login ({ commit }, { username, password }) {
-      console.log('vuex >', 'login')
+      // console.log('vuex >', 'login')
       const { data: { user, token, issuedAt, expiresIn } } = await axios.post('login', {
         username: username,
         password: password
       })
 
       commit('attach', { user, token, issuedAt, expiresIn })
-      console.log('- token expires in:', new Date(expiresIn * 1000).toLocaleString())
+      // console.log('- token expires in:', new Date(expiresIn * 1000).toLocaleString())
     },
 
     logout ({ commit }) {
-      console.log('vuex >', 'logout')
+      // console.log('vuex >', 'logout')
       commit('detach')
     }
   },
